@@ -1,0 +1,125 @@
+Problem Statement:
+Given a list of contacts contact[] of length n where each contact is a string which exist in a phone directory and a query string s. The task is to implement a search query for the phone directory. Run a search query for each prefix p of the query string s (i.e. from  index 1 to |s|) that prints all the distinct contacts which have the same prefix as p in lexicographical increasing order. Please refer the explanation part for better understanding.
+Note: If there is no match between query and contacts, print "0".
+
+Example:
+
+Input: 
+n = 3
+contact[] = {"geeikistest", "geeksforgeeks", 
+"geeksfortest"}
+s = "geeips"
+
+Output:
+geeikistest geeksforgeeks geeksfortest
+geeikistest geeksforgeeks geeksfortest
+geeikistest geeksforgeeks geeksfortest
+geeikistest
+0
+0
+
+Explaination: 
+By running the search query on 
+contact list for "g" we get: "geeikistest", 
+"geeksforgeeks" and "geeksfortest".
+By running the search query on contact list 
+for "ge" we get: "geeikistest" "geeksforgeeks"
+and "geeksfortest".
+By running the search query on contact list 
+for "gee" we get: "geeikistest" "geeksforgeeks"
+and "geeksfortest".
+By running the search query on contact list 
+for "geei" we get: "geeikistest".
+No results found for "geeip", so print "0". 
+No results found for "geeips", so print "0".
+
+Solution:
+class Trie {
+
+    static class Node {
+        Node[] links;
+        //List<String> contacts = new ArrayList<String>();
+        // using set for duplicate scenario
+        Set<String> contacts = new HashSet<>(); 
+
+        Node() {
+            links = new Node[26];
+        }
+
+        boolean containsKey(char ch) {
+            return links[ch - 'a'] != null;
+        }
+
+        Node get(char ch) {
+            return links[ch - 'a'];
+        }
+
+        void put(char ch, Node node) {
+            links[ch - 'a'] = node;
+        }
+        
+        void addContact(String word) {
+            contacts.add(word);
+        }
+        
+    }
+
+    private Node root;
+
+    Trie() {
+        root = new Node();
+    }
+    
+    public void insert(String word) {
+        Node node = root;
+        for (int i = 0; i < word.length(); i++) {
+            if (!node.containsKey(word.charAt(i))) {
+                node.put(word.charAt(i), new Node());
+            }
+            node = node.get(word.charAt(i));
+            node.addContact(word);
+        }
+    }
+
+    public List<String> search(String word) {
+        Node node = root;
+        for (int i = 0; i < word.length(); i++) {
+            if (node.containsKey(word.charAt(i))) {
+                node = node.get(word.charAt(i));
+            }else{
+                return new ArrayList<>();
+            }
+        }
+        List<String> result = new ArrayList<>(node.contacts);
+        Collections.sort(result);
+        return result;
+    }
+
+}
+
+class Solution{
+    static ArrayList<ArrayList<String>> displayContacts(int n, 
+                                        String contact[], String s)
+    {
+        Trie trie = new Trie();
+        
+        for (String word : contact) {
+            trie.insert(word);
+        }
+        
+        ArrayList<ArrayList<String>> ans = new ArrayList<>();
+        
+        String prefix = "";
+        for (char ch : s.toCharArray()) {
+            prefix += ch;
+            List<String> result = trie.search(prefix);
+            
+            if (result.isEmpty()) {
+                ans.add(new ArrayList<>(Arrays.asList("0")));
+            } else {
+                ans.add(new ArrayList<>(result));
+            }
+        }
+        return ans;
+    }
+}
