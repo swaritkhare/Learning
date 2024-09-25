@@ -116,3 +116,8 @@ public class Solution {
          return ans; 
     }
 }
+
+In this soln we use offline query method we baiscaully sort the arr and queries ArrayList, the intutuion is for ex we have 1 4 2 3 0 as array and queries is (2,3) (3,1) (4,2) (5,0)
+now when we sort queries we get (5,0) (3,1) (4,2) (2,3) and after sorting array we get 0 1 2 3 4 we will create a trie for the required query we see query as 5 , 0 we check is there
+any element <= 0 yes we have 0 so we add 0 in trie and calcuate xor of 0 with 5 and save in an arraylist ans we do this for every sorted query till we have inserted every elemnt in tire
+
