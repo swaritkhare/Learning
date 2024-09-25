@@ -1,0 +1,122 @@
+Problem Statement:
+Given a dictionary of words where each word follows CamelCase notation, print all words (in lexicographical order) in the dictionary that match with a given pattern consisting of uppercase characters only.
+
+Example: GeeksForGeeks matches the pattern "GFG", because if we combine all the capital letters in GeeksForGeeks they become GFG. Also note "GeeksForGeeks" matches with the pattern "GFG" and also "GF", but not matches with "FG".
+
+CamelCase is the practice of writing compound words or phrases such that each word or abbreviation begins with a capital letter. Common examples include PowerPoint and Wikipedia, GeeksForGeeks, CodeBlocks, etc.
+
+Example:
+Input:
+N=3
+Dictionary=["WelcomeGeek",
+"WelcomeToGeeksForGeeks","GeeksForGeeks"]
+Pattern="WTG"
+
+Output:
+WelcomeToGeeksForGeeks
+
+Explanation:
+Since only WelcomeToGeeksForGeeks matches 
+the pattern, it is the only answer.
+
+Solution:
+class Node{
+    Node [] link = new Node[26];
+    List<String> words = new ArrayList<>();
+}
+class Trie{
+    private Node root;
+    
+    Trie(){
+        root = new Node();
+    }
+    
+    public void insert(String word){
+        Node node = root;
+        for(int i = 0; i<word.length();i++){
+            if(Character.isUpperCase(word.charAt(i))){
+                int index = word.charAt(i) - 'A';  // 'A' -> 0, 'B' -> 1, ..., 'Z' -> 25
+                if (node.link[index] == null) {
+                    node.link[index] = new Node();
+                }
+                node = node.link[index];
+                node.words.add(word);  // Add the word at every node corresponding to an uppercase letter
+            }
+        }
+    }
+    
+    public ArrayList<String> search(String word){
+         Node node = root;
+        for (char ch : word.toCharArray()) {
+            int index = ch - 'A';
+            if (node.link[index] == null) {
+                return new ArrayList<>();  // If no matching path exists, return empty list
+            }
+            node = node.link[index];
+        }
+        ArrayList<String> result = new ArrayList<>(node.words);
+        Collections.sort(result);  // Sort lexicographically if required
+        return result;
+    }
+}
+class Solution{
+    ArrayList<String> CamelCase(int N,String[] Dictionary,String Pattern){
+        Trie trie = new Trie();
+        
+        // Insert all words into the Trie
+        for (String word : Dictionary) {
+            trie.insert(word);
+        }
+        
+        // Search for the pattern in the Trie
+        ArrayList<ArrayList<String>> result = new ArrayList<>();
+        ArrayList<String> ans = new ArrayList<>();
+        
+        ArrayList<String> matchedWords = trie.search(Pattern);
+        if (matchedWords.isEmpty()) {
+            return new ArrayList<>(Arrays.asList("-1"));
+        } else {
+            return matchedWords;
+        }
+        
+    }
+}
+
+alternate solution without trie
+static boolean matchesPattern(String word, String pattern) {
+        int j = 0;  // Pointer for pattern
+        // Traverse the word and check if we can form the pattern with the capital letters
+        for (int i = 0; i < word.length(); i++) {
+            if (Character.isUpperCase(word.charAt(i))) {
+                // If the current character matches the pattern's current character
+                if (j < pattern.length() && word.charAt(i) == pattern.charAt(j)) {
+                    j++;
+                } else if (j == pattern.length()) {
+                    break;
+                }
+            }
+        }
+        // If we've matched all characters of the pattern, return true
+        return j == pattern.length();
+    }
+    
+    static ArrayList<String> findAllWords(int N, String[] dictionary, String pattern) {
+        ArrayList<String> result = new ArrayList<>();
+        
+        // Check for each word in the dictionary
+        for (String word : dictionary) {
+            if (matchesPattern(word, pattern)) {
+                result.add(word);
+            }
+        }
+        
+        // Sort the result lexicographically
+        Collections.sort(result);
+        
+        // If no word matched, return a list containing "No match found"
+        if (result.isEmpty()) {
+            result.add("No match found");
+        }
+        
+        return result;
+    }
