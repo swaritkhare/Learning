@@ -1,0 +1,178 @@
+Problem Statement:
+Given two distinct words startWord and targetWord, and a list denoting wordList of unique words of equal lengths. Find all shortest transformation sequence(s) from startWord to targetWord. You can return them in any order possible.
+Keep the following conditions in mind:
+
+A word can only consist of lowercase characters.
+Only one letter can be changed in each transformation.
+Each transformed word must exist in the wordList including the targetWord.
+startWord may or may not be part of the wordList.
+Return an empty list if there is no such transformation sequence.
+The first part of this problem can be found here.
+
+Example:
+Input:
+startWord = "der", targetWord = "dfs",
+wordList = {"des","der","dfr","dgt","dfs"}
+Output:
+der dfr dfs
+der des dfs
+Explanation:
+The length of the smallest transformation is 3.
+And the following are the only two ways to get
+to targetWord:-
+"der" -> "des" -> "dfs".
+"der" -> "dfr" -> "dfs".
+
+Expected Time Compelxity: O(N*(logN * M * 26))
+Expected Auxiliary Space: O(N * M) where N = length of wordList and M = |wordListi|
+
+Solution:
+class Solution {
+    public ArrayList<ArrayList<String>> findSequences(String startWord,
+                                                      String targetWord,
+                                                      String[] wordList) {
+        // Code here
+        Set<String> set = new HashSet<String>();
+        int len = wordList.length;
+        for(int i =0; i< len; i ++){
+            set.add(wordList[i]);
+        }
+        Queue<ArrayList<String>> q = new LinkedList<ArrayList<String>>();
+        ArrayList<String> st = new ArrayList<String>();
+        st.add(startWord);
+        q.add(st);
+        ArrayList<String> usedonlevel = new ArrayList<String>();
+        int level = 0;
+        ArrayList<ArrayList<String>> ans = new ArrayList<>();
+        while(!q.isEmpty()){
+            ArrayList<String> data = q.peek();
+            q.remove();
+            
+            if(data.size() > level){
+                level++;
+                for(String it : usedonlevel){
+                    set.remove(it);
+                }
+            }
+            String word = data.get(data.size() -1);
+            if(word.equals(targetWord)== true){
+                if(ans.size() == 0){
+                    ans.add(data);
+                }
+                else if(ans.get(0).size() == data.size()){
+                    ans.add(data);
+                }
+            }
+            
+            for(int i = 0; i< word.length(); i++){
+                for(char ch = 'a'; ch<= 'z' ; ch++){
+                    char [] original = word.toCharArray();
+                    original[i] = ch;
+                    String remdata = new String(original);
+                    if(set.contains(remdata) == true){
+                       data.add(remdata);
+                       ArrayList<String> temp = new ArrayList<>(data);
+                       q.add(temp);
+                       usedonlevel.add(remdata);
+                       data.remove(remdata);
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+// 1. Initialize the Word Set:
+// java
+// Copy code
+// Set<String> set = new HashSet<String>();
+// int len = wordList.length;
+// for(int i = 0; i < len; i++) {
+//     set.add(wordList[i]);
+// }
+// A HashSet<String> named set is created to store all the words from wordList.
+// The reason for using a HashSet is that it provides O(1) average-time complexity for lookups, making it efficient to check if a word exists in the set.
+// The code loops through the wordList and adds each word to set.
+// 2. Initialize BFS (Breadth-First Search) Structures:
+// java
+// Copy code
+// Queue<ArrayList<String>> q = new LinkedList<ArrayList<String>>();
+// ArrayList<String> st = new ArrayList<String>();
+// st.add(startWord);
+// q.add(st);
+// ArrayList<String> usedonlevel = new ArrayList<String>();
+// int level = 0;
+// ArrayList<ArrayList<String>> ans = new ArrayList<>();
+// A queue q is created to perform BFS. Each element in the queue is an ArrayList<String> that represents a sequence of transformations.
+// A list st is created to store the initial sequence, which only contains startWord.
+// The queue q is initialized with st, starting the BFS with the startWord.
+// An ArrayList<String> named usedonlevel is used to keep track of the words that have been used in the current level of BFS. This helps in removing words from the set once the level is complete.
+// level keeps track of the depth of the BFS (i.e., how many transformations deep we are).
+// ans is an ArrayList<ArrayList<String>> that will store all the shortest transformation sequences.
+// 3. Start BFS Loop:
+// java
+// Copy code
+// while (!q.isEmpty()) {
+//     ArrayList<String> data = q.peek();
+//     q.remove();
+// The BFS loop runs until the queue is empty.
+// The code retrieves the sequence at the front of the queue using q.peek() and then removes it from the queue using q.remove().
+// 4. Manage BFS Levels:
+// java
+// Copy code
+// if (data.size() > level) {
+//     level++;
+//     for (String it : usedonlevel) {
+//         set.remove(it);
+//     }
+// }
+// If the current sequence's size exceeds the current level, it means we're moving to the next level of BFS.
+// The level is incremented, and all words stored in usedonlevel (which were used in the previous level) are removed from the set.
+// Removing these words ensures that we don't use them again in sequences that are longer than the shortest sequence.
+// 5. Check for Target Word:
+// java
+// Copy code
+// String word = data.get(data.size() - 1);
+// if (word.equals(targetWord)) {
+//     if (ans.size() == 0) {
+//         ans.add(data);
+//     } else if (ans.get(0).size() == data.size()) {
+//         ans.add(data);
+//     }
+// }
+// The code retrieves the last word in the current sequence using data.get(data.size() - 1).
+// If this word is equal to targetWord, it checks whether this is the first sequence found (ans.size() == 0) or if this sequence has the same length as the already found sequences (ans.get(0).size() == data.size()).
+// If either condition is true, the sequence data is added to ans.
+// 6. Generate Possible Next Words:
+// java
+// Copy code
+// for (int i = 0; i < word.length(); i++) {
+//     for (char ch = 'a'; ch <= 'z'; ch++) {
+//         char[] original = word.toCharArray();
+//         original[i] = ch;
+//         String remdata = new String(original);
+//         if (set.contains(remdata)) {
+//             data.add(remdata);
+//             ArrayList<String> temp = new ArrayList<>(data);
+//             q.add(temp);
+//             usedonlevel.add(remdata);
+//             data.remove(data.size() - 1);
+//         }
+//     }
+// }
+// The code attempts to generate all possible words that differ by just one character from the current word.
+// For each character position in word, it tries replacing the character with every letter from 'a' to 'z'.
+// If the newly generated word (remdata) exists in set, it is a valid transformation.
+// The word is added to data, and a copy of this updated sequence (temp) is added to the queue q.
+// The word remdata is also added to usedonlevel so it can be removed from set at the next level.
+// Finally, the word is removed from data to backtrack and try the next possible transformation.
+// 7. Return the Result:
+// java
+// Copy code
+// return ans;
+// After the BFS completes, the code returns ans, which contains all the shortest transformation sequences from startWord to targetWord.
+// Summary:
+// The code performs a BFS to explore all possible sequences of transformations from startWord to targetWord.
+// It keeps track of the shortest sequences and ensures that only those are added to the result.
+// The level management and word removal ensure that the BFS efficiently explores only the shortest paths.
