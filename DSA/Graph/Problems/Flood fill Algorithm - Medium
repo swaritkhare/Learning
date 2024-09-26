@@ -1,0 +1,40 @@
+Problem Statement:
+An image is represented by a 2-D array of integers, each integer representing the pixel value of the image.
+
+Given a coordinate (sr, sc) representing the starting pixel (row and column) of the flood fill, and a pixel value newColor, "flood fill" the image.
+
+To perform a "flood fill", consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same color as the starting pixel, plus any pixels connected 4-directionally to those pixels (also with the same color as the starting pixel), and so on. Replace the color of all of the aforementioned pixels with the new color.
+
+Examples:
+Input: image = [[1,1,1],[1,1,0],[1,0,1]], sr = 1, sc = 1, newColor = 2.
+Output: [[2,2,2],[2,2,0],[2,0,1]]
+Explanation: From the center of the image (with position (sr, sc) = (1, 1)), all pixels connected by a path of the same color as the starting pixel are colored with the new color.Note the bottom corner is not colored 2, because it is not 4-directionally connected to the starting pixel.
+
+Expected Time Complexity: O(n*m)
+Expected Space Complexity: O(n*m)
+
+Solution:
+class Solution
+{
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor)
+    {
+        int colo = image[sr][sc];
+        int [][] ans = image;
+        int [] drow = {-1,0,+1,0};
+        int [] dcol = {0,+1,0,-1};
+        dfs(sr,sc,ans,image,colo,drow,dcol,newColor);
+        return ans;
+    }
+    private void dfs(int row, int col, int [][] ans, int[][] image,int colo,int [] drow ,int [] dcol, int newcolor){
+        ans[row][col] = newcolor;
+        int m = image.length;
+        int n = image[0].length;
+        for(int i = 0; i<4 ; i++){
+            int delrow = row + drow[i];
+            int delcol = col + dcol[i];
+            if(delrow>=0 && delrow < m && delcol>=0 && delcol <n && image[delrow][delcol] == colo && ans[delrow][delcol] != newcolor){
+                dfs(delrow,delcol,ans,image,colo,drow,dcol,newcolor);
+            }
+        }
+    }
+}
