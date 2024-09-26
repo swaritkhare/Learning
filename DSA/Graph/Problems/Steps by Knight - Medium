@@ -1,0 +1,67 @@
+Problem Statement:
+Given a square chessboard, the initial position of Knight and position of a target. Find out the minimum steps a Knight will take to reach the target position.
+
+Note:
+The initial and the target position coordinates of Knight have been given according to 1-base indexing.
+
+Example:
+Input:
+N=6
+knightPos[ ] = {4, 5}
+targetPos[ ] = {1, 1}
+Output:
+3
+Explanation:
+Knight takes 3 step to reach from 
+(4, 5) to (1, 1):
+(4, 5) -> (5, 3) -> (3, 2) -> (1, 1).
+
+Expected Time Complexity: O(N2).
+Expected Auxiliary Space: O(N2).
+
+Solution:
+class KnightPosition {
+    int x, y, dist;
+    
+    KnightPosition(int x, int y, int dist) {
+        this.x = x;
+        this.y = y;
+        this.dist = dist;
+    }
+}
+class Solution
+{
+    //Function to find out minimum steps Knight needs to reach target position.
+    public int minStepToReachTarget(int KnightPos[], int TargetPos[], int N)
+    {
+        int[] dx = { 2, 2, -2, -2, 1, 1, -1, -1 };
+        int[] dy = { 1, -1, 1, -1, 2, -2, 2, -2 };
+        
+        Queue<KnightPosition> q = new LinkedList<>();
+        boolean [][] vis = new boolean[N+1][N+1];
+        
+        q.add(new KnightPosition(KnightPos[0], KnightPos[1], 0));
+        vis[KnightPos[0]][KnightPos[1]] = true;
+
+        while(!q.isEmpty()){
+            int row = q.peek().x;
+            int col = q.peek().y;
+            int dis = q.peek().dist;
+            q.remove();
+            
+             if (row == TargetPos[0] && col == TargetPos[1]) {
+                return dis;
+            }
+            
+            for(int i = 0; i<8;i++){
+                int nrow = row + dx[i];
+                int ncol = col + dy[i];
+                if(nrow >= 1 && ncol >= 1 && nrow <=N && ncol <=N && vis[nrow][ncol] == false){
+                    vis[nrow][ncol] = true;
+                    q.add(new KnightPosition(nrow, ncol, dis + 1));
+                }
+            }
+        }
+        return -1;
+    }
+}
