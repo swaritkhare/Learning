@@ -1,0 +1,69 @@
+Problem Statement:
+Given two distinct words startWord and targetWord, and a list denoting wordList of unique words of equal lengths. Find the length of the shortest transformation sequence from startWord to targetWord.
+Keep the following conditions in mind:
+
+A word can only consist of lowercase characters.
+Only one letter can be changed in each transformation.
+Each transformed word must exist in the wordList including the targetWord.
+startWord may or may not be part of the wordList
+The second part of this problem can be found here.
+
+Note: If no possible way to transform sequence from startWord to targetWord return 0
+
+Example:
+Input:
+wordList = {"des","der","dfr","dgt","dfs"}
+startWord = "der", targetWord= "dfs",
+Output:
+3
+Explanation:
+The length of the smallest transformation
+sequence from "der" to "dfs" is 3
+i,e "der" -> "dfr" -> "dfs".
+
+Expected Time Compelxity: O(N2 * M)
+Expected Auxiliary Space: O(N * M) where N = length of wordList and M = |wordListi|
+
+Solution:
+class Solution
+{
+    class pair{
+        String first;
+        int second;
+        public pair(String first, int second){
+            this.first = first;
+            this.second = second;
+        }
+    }
+    public int wordLadderLength(String startWord, String targetWord, String[] wordList)
+    {
+        Queue<pair> q = new LinkedList<pair>();
+        q.add(new pair(startWord,1));
+        Set<String> set = new HashSet<String>();
+        int wlen = wordList.length;
+        for(int i = 0;i < wlen ; i++){
+            set.add(wordList[i]);
+        }
+        set.remove(startWord);
+        while(!q.isEmpty()){
+            String data = q.peek().first;
+            int step = q.peek().second;
+            q.remove();
+            if(data.equals(targetWord) == true){
+                return step;
+            }
+            for(int i = 0; i< data.length(); i++){
+                char og[] = data.toCharArray();
+                for(char ch = 'a' ; ch<= 'z'; ch++){
+                    og[i] = ch;
+                    String replaceword = new String(og);
+                    if(set.contains(replaceword) == true){
+                        set.remove(replaceword);
+                        q.add(new pair(replaceword,step +1));
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+}
