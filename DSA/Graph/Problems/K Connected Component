@@ -1,0 +1,182 @@
+Given an undirected graph with n nodes and m edges, where each edge has a weight wi, find the minimum number of edges that need to be removed to disconnect the graph into exactly k connected component
+
+Solution:
+
+Given an undirected graph with n nodes and m edges, each edge has a weight. Your goal is to remove the minimum number of edges to disconnect the graph into exactly k connected components.
+
+Key Insights:
+To form exactly k connected components from a connected graph, you need to remove edges in such a way that the number of components increases by k−1.
+A Minimum Spanning Tree (MST) of a graph connects all the vertices with the minimum possible total edge weight, using exactly n−1 edges for a graph with n nodes.
+If you start from the MST and remove the heaviest edges, it is the most efficient way to break the graph into multiple connected components with the minimum number of removed edges.
+
+Plan:
+Step 1: Construct an MST: This reduces the problem to a tree, where breaking the graph into multiple components involves removing edges from the MST.
+Step 2: Remove Edges from the MST: The most efficient way to disconnect the graph is by removing the heaviest edges from the MST.
+Step 3: Achieve exactly k connected components: Removing k−1 edges from the MST gives you exactly k connected components.
+
+Detailed Explanation:
+1. Understanding the Initial Graph:
+The graph is undirected and has n nodes and m edges, where each edge has a weight w. The graph may be connected or disconnected, but the goal is to disconnect it into exactly k connected components.
+
+2. What is a Minimum Spanning Tree (MST)?:
+A Minimum Spanning Tree (MST) of a graph is a subset of the edges that connect all the nodes (i.e., make the graph connected), such that:
+
+It uses exactly n−1 edges (where n is the number of nodes).
+The sum of the weights of the edges is minimized.
+There are no cycles.
+
+There are two popular algorithms to construct an MST:
+
+Kruskal's Algorithm: Works by sorting all edges by their weight and greedily picking the smallest edge, ensuring no cycles.
+Prim's Algorithm: Starts with one node and adds the smallest possible edge connecting the node to a new vertex until all nodes are included.
+In this solution, we'll use Kruskal's Algorithm, which pairs well with Disjoint Set Union (DSU).
+
+3. How to Split the Graph into k Components?
+Once we have the MST, it represents the most efficient way to connect all the nodes with minimal total edge weight. To split the graph into k components, we need to:
+Remove edges from the MST.
+Each edge removed increases the number of components by 1.
+Therefore, if we need exactly k components, we need to remove k−1 edges from the MST.
+
+4. Why Remove the Heaviest Edges?
+The goal is to minimize the number of edges removed. If we remove the heaviest edges from the MST, we disconnect the components while minimizing the impact on the overall structure of the graph.
+
+Solution Approach:
+Construct the Minimum Spanning Tree (MST):
+
+Use Kruskal’s algorithm to build the MST.
+Track the edges added to the MST (these are the candidates for removal later).
+Sort the MST Edges by Weight:
+
+Once the MST is built, sort the edges in descending order of their weights. These are the edges that you will remove first to disconnect the graph.
+Remove the k−1 Heaviest Edges:
+
+Remove the k−1 heaviest edges from the MST. This ensures that we create exactly k connected components.
+Return the Number of Edges Removed:
+
+The number of edges removed is k−1.
+Algorithm (Using Kruskal’s Algorithm + DSU):
+Here is a more detailed implementation using Kruskal's algorithm to construct the MST, and Disjoint Set Union (DSU) to manage the connected components.
+
+import java.util.*;
+
+class Edge {
+    int u, v, weight;
+
+    Edge(int u, int v, int weight) {
+        this.u = u;
+        this.v = v;
+        this.weight = weight;
+    }
+}
+
+class DSU {
+    int[] parent, rank;
+
+    public DSU(int n) {
+        parent = new int[n];
+        rank = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = i; // Each node is its own parent initially
+            rank[i] = 1;   // Rank starts as 1
+        }
+    }
+
+    // Find the representative (root) of the set containing node x
+    public int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]); // Path compression
+        }
+        return parent[x];
+    }
+
+    // Union the sets containing x and y (if they're disjoint)
+    public void union(int x, int y) {
+        int rootX = find(x);
+        int rootY = find(y);
+        
+        if (rootX != rootY) {
+            // Union by rank
+            if (rank[rootX] > rank[rootY]) {
+                parent[rootY] = rootX;
+            } else if (rank[rootX] < rank[rootY]) {
+                parent[rootX] = rootY;
+            } else {
+                parent[rootY] = rootX;
+                rank[rootX]++;
+            }
+        }
+    }
+}
+
+public class Solution {
+    // Function to find the minimum number of edges to remove to get k connected components
+    public static int minEdgesToRemove(int n, int m, List<Edge> edges, int k) {
+        // Step 1: Sort edges by weight (for Kruskal's Algorithm)
+        edges.sort(Comparator.comparingInt(e -> e.weight));
+        
+        DSU dsu = new DSU(n);  // Create a DSU for managing connected components
+        
+        List<Edge> mstEdges = new ArrayList<>(); // Store edges of the MST
+        
+        // Step 2: Build the Minimum Spanning Tree (MST) using Kruskal's algorithm
+        for (Edge edge : edges) {
+            if (dsu.find(edge.u) != dsu.find(edge.v)) {
+                dsu.union(edge.u, edge.v);
+                mstEdges.add(edge);
+            }
+        }
+        
+        // Now the MST is built. It has n-1 edges and 1 connected component.
+
+        // Step 3: Sort the edges in the MST by weight in descending order (to remove heaviest first)
+        mstEdges.sort((e1, e2) -> Integer.compare(e2.weight, e1.weight));
+
+        // Step 4: To form k components, we need to remove k-1 edges from the MST
+        int edgesToRemove = k - 1;
+
+        // If there are not enough edges in the MST to remove, it's impossible
+        if (edgesToRemove > mstEdges.size()) {
+            return -1;  // Not enough edges to remove
+        }
+        
+        return edgesToRemove;
+    }
+
+    public static void main(String[] args) {
+        // Test case: n = 4 nodes, m = 5 edges, k = 2 connected components
+        List<Edge> edges = Arrays.asList(
+            new Edge(0, 1, 10),
+            new Edge(0, 2, 6),
+            new Edge(0, 3, 5),
+            new Edge(1, 3, 15),
+            new Edge(2, 3, 4)
+        );
+        
+        int n = 4;  // Number of nodes
+        int m = 5;  // Number of edges
+        int k = 2;  // Desired number of connected components
+        
+        int result = minEdgesToRemove(n, m, edges, k);
+        System.out.println(result);  // Output the minimum number of edges to remove
+    }
+}
+
+Explanation:
+Step 1: Sort the edges by weight. This allows us to use Kruskal's algorithm to build the MST.
+Step 2: Construct the MST using Kruskal's algorithm. Each time we find an edge that connects two different components (using DSU), we add it to the MST.
+Step 3: Sort the MST edges in descending order. This ensures that when we remove edges, we remove the heaviest ones first, minimizing the number of cuts needed.
+Step 4: Remove k−1 heaviest edges. Removing k−1 edges results in exactly k connected components.
+
+Time Complexity:
+Sorting the edges: O(mlogm), where m is the number of edges.
+Kruskal's algorithm with DSU: O(mlogn), where n is the number of nodes.
+Sorting the MST edges: O(nlogn).
+
+Space Complexity:
+The space complexity is O(n+m), due to the storage of edges and DSU arrays.
+
+Edge Case:
+If there are fewer than k−1 edges in the MST, it’s impossible to get k components, and the function returns -1.
+
+Conclusion:
+This approach efficiently computes the minimum number of edges to remove to disconnect the graph into exactly k components by leveraging the MST and the heaviest edges removal technique.
