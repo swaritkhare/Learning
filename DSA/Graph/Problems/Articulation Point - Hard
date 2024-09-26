@@ -1,0 +1,62 @@
+Problem Statement:
+Given an undirected connected graph with V vertices and adjacency list adj. You are required to find all the vertices removing which (and edges through it) disconnects the graph into 2 or more components and return it in sorted manner.
+Note: Indexing is zero-based i.e nodes numbering from (0 to V-1). There might be loops present in the graph.
+Your task is to complete the function articulationPoints() which takes V and adj as input parameters and returns a list containing all the vertices removing which turn the graph into two or more disconnected components in sorted order. If there are no such vertices then returns a list containing -1.
+
+Expected Time Complexity: O(V + E)
+Expected Auxiliary Space: O(V)
+
+Solution:
+
+
+class Solution
+{
+    //Function to return Breadth First Traversal of given graph.
+    public ArrayList<Integer> articulationPoints(int V,ArrayList<ArrayList<Integer>> adj)
+    {
+        int [] vis = new int[V];
+        int [] timein = new int[V];
+        int [] low = new int[V];
+        int [] mark = new int[V];
+        
+        for(int i =0 ;i <V; i++){
+            if(vis[i] == 0){
+                dfs(i,-1,vis,timein,low,mark,adj);
+            }
+        }
+        ArrayList<Integer> ans = new ArrayList<>();
+        for(int i = 0; i<V; i++){
+            if(mark[i] == 1){
+                ans.add(i);
+            }
+        }
+        if(ans.size() == 0){
+            ans.add(-1);
+        }
+        return ans;
+    }
+    public int timer = 1;
+    public void dfs(int node, int parent, int [] vis, int [] timein, int [] low, int [] mark, ArrayList<ArrayList<Integer>> adj){
+        vis[node] = 1;
+        timein[node] = low[node] = timer;
+        timer++;
+        int child = 0;
+        for(Integer e: adj.get(node)){
+            if(e == parent) continue;
+            if(vis[e] == 0){
+                dfs(e,node,vis,timein,low,mark,adj);
+                low[node] = Math.min(low[node], low[e]);
+                if(low[e] >= timein[node] && parent != -1){
+                    mark[node] = 1;
+                }
+                child++;
+            }
+            else{
+                low[node] = Math.min(low[node], timein[e]);
+            }
+        }
+        if(child > 1 && parent == -1){
+            mark[node] = 1;
+        }
+    }
+}
