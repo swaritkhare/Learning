@@ -1,0 +1,96 @@
+Problem Statement:
+Given a square grid of size N, each cell of which contains an integer cost that represents a cost to traverse through that cell, we need to find a path from the top left cell to the bottom right cell by which the total cost incurred is minimum.
+From the cell (i,j) we can go (i,j-1), (i, j+1), (i-1, j), (i+1, j).  
+
+Examples :
+
+Input: grid = {{9,4,9,9},{6,7,6,4},{8,3,3,7},{7,4,9,10}}
+Output: 43
+Explanation: The grid is-
+9 4 9 9
+6 7 6 4
+8 3 3 7
+7 4 9 10
+The minimum cost is-
+9 + 4 + 7 + 3 + 3 + 7 + 10 = 43.
+
+Expected Time Complexity: O(n2*log(n))
+Expected Auxiliary Space: O(n2) 
+
+Solution:
+
+class Cell implements Comparable<Cell> {
+    int row, col, cost;
+
+    Cell(int row, int col, int cost) {
+        this.row = row;
+        this.col = col;
+        this.cost = cost;
+    }
+
+    // Compare based on the cost for the priority queue
+    public int compareTo(Cell other) {
+        return this.cost - other.cost;
+    }
+}
+class Solution
+{
+    //Function to return the minimum cost to react at bottom
+	//right cell from top left cell.
+    public int minimumCostPath(int[][] grid)
+    {
+        int n = grid.length;
+        
+        // PriorityQueue to always process the minimum cost cell
+        PriorityQueue<Cell> pq = new PriorityQueue<>();
+        
+        // Distance array to track minimum cost to reach each cell
+        int[][] dist = new int[n][n];
+        
+        // Fill distance array with a large number (infinity)
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                dist[i][j] = Integer.MAX_VALUE;
+            }
+        }
+        
+        // Directions for the 4 possible moves (up, right, down, left)
+        int[] drow = {-1, 0, 1, 0};
+        int[] dcol = {0, 1, 0, -1};
+        
+        // Start from the top-left corner
+        pq.add(new Cell(0, 0, grid[0][0]));
+        dist[0][0] = grid[0][0];
+        
+        while (!pq.isEmpty()) {
+            Cell current = pq.poll();
+            int row = current.row;
+            int col = current.col;
+            int currentCost = current.cost;
+            
+            // If we reached the bottom-right corner, return the cost
+            if (row == n - 1 && col == n - 1) {
+                return currentCost;
+            }
+            
+            // Explore all 4 possible moves
+            for (int i = 0; i < 4; i++) {
+                int nrow = row + drow[i];
+                int ncol = col + dcol[i];
+                
+                // If the new position is within bounds
+                if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < n) {
+                    int newCost = currentCost + grid[nrow][ncol];
+                    
+                    // If we find a shorter path to reach (nrow, ncol), update and add to the priority queue
+                    if (newCost < dist[nrow][ncol]) {
+                        dist[nrow][ncol] = newCost;
+                        pq.add(new Cell(nrow, ncol, newCost));
+                    }
+                }
+            }
+        }
+        
+        return -1;
+    }
+}
