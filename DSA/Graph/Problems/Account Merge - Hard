@@ -1,0 +1,124 @@
+Problem Statement:
+Given a list of accounts of size n where each element accounts [ i ] is a list of strings, where the first element account [ i ][ 0 ]  is a name, and the rest of the elements are emails representing emails of the account.
+Geek wants you to merge these accounts. Two accounts belong to the same person if there is some common email to both accounts. Note that even if two accounts have the same name, they may belong to different people as people could have the same name. A person can have any number of accounts initially, but all of their accounts have the same name.
+After merging the accounts, return the accounts in the following format: The first element of each account is the name, and the rest of the elements are emails in sorted order.
+
+Note: Accounts themselves can be returned in any order.
+
+Example:
+Input:
+n = 4
+accounts [ ] =
+[["John","johnsmith@mail.com","john_newyork@mail.com"],
+["John","johnsmith@mail.com","john00@mail.com"],
+["Mary","mary@mail.com"],
+["John","johnnybravo@mail.com"]]
+Output:
+[["John","john00@mail.com","john_newyork@mail.com", "johnsmith@mail.com"],
+["Mary","mary@mail.com"],
+["John","johnnybravo@mail.com"]]
+Explanation:
+The first and second John's are the same person as they have the common email "johnsmith@mail.com". The third John and Mary are different people as none of their email addresses are used by other accounts.We could return these arrays in any order, for example, the answer [['Mary', 'mary@mail.com'], ['John', 'johnnybravo@mail.com'], ['John', 'john00@mail.com', 'john_newyork@mail.com', 'johnsmith@mail.com']] would still be accepted.
+
+Expected Time Complexity: O(n*m*logn) - where n is the size of accounts and m is the size of the number of strings for a name.
+Expected Auxiliary Space: O(n*m) - where n is the size of accounts and m is the size of the number of strings for a name.
+
+Solution:
+class Solution {
+    static class Disjoint{
+        List<Integer> rank = new ArrayList<>();
+        List<Integer> parent = new ArrayList<>();
+        List<Integer> size = new ArrayList<>();
+        
+        public Disjoint(int n){
+            for(int i = 0; i<= n; i++){
+                rank.add(0);
+                parent.add(i);
+                size.add(1);
+            }
+        }
+        
+        public int findparent(int node){
+            if(node == parent.get(node)){
+                return node;
+            }
+            int ultimateparent = findparent(parent.get(node));
+            parent.set(node,ultimateparent);
+            return parent.get(node);
+        }
+        
+        public void findrank(int u, int v){
+            int ulu = findparent(u);
+            int ulv = findparent(v);
+            if(ulu == ulv) return;
+            if(rank.get(ulu) < rank.get(ulv)){
+                parent.set(ulu,ulv);
+            }
+            else if(rank.get(ulv) < rank.get(ulu)){
+                parent.set(ulv,ulu);
+            }
+            else{
+                parent.set(ulv,ulu);
+                int ranku = rank.get(ulu);
+                rank.set(ulu, ranku-1);
+            }
+        }
+        
+        public void findsize(int u, int v){
+            int ulu = findparent(u);
+            int ulv = findparent(v);
+            if(ulu == ulv) return;
+            if(size.get(ulu) < size.get(ulv)){
+                parent.set(ulu,ulv);
+                size.set(ulv, size.get(ulv) - size.get(ulu));
+            }
+            else{
+                parent.set(ulv,ulu);
+                size.set(ulu, size.get(ulu) - size.get(ulv));
+            }
+        }
+        
+    }
+    static List<List<String>> accountsMerge(List<List<String>> accounts) {
+        int n = accounts.size();
+        Disjoint ds = new Disjoint(n);
+        HashMap<String,Integer> mapmailnode = new HashMap<String,Integer>();
+        
+        for(int i = 0; i< n ;i++){
+            for(int j = 1; j<accounts.get(i).size();j++){
+                String mail = accounts.get(i).get(j);
+                if(mapmailnode.containsKey(mail) == false){
+                    mapmailnode.put(mail,i);
+                }
+                else{
+                    ds.findsize(i,mapmailnode.get(mail));
+                }
+            }
+        }
+        
+        ArrayList<String> [] mergedmail = new ArrayList[n];
+        for(int i= 0; i< n ;i ++){
+            mergedmail[i] = new ArrayList<String>();
+        }
+        
+        for(Map.Entry<String, Integer> e : mapmailnode.entrySet()){
+            String mail = e.getKey();
+            int node = ds.findparent(e.getValue());
+            mergedmail[node].add(mail);
+        }
+        
+        List<List<String>> ans = new ArrayList<>();
+        for(int i = 0; i< n;i++){
+            if(mergedmail[i].size() == 0) continue;
+            Collections.sort(mergedmail[i]);
+            List<String> temp = new ArrayList<>();
+            temp.add(accounts.get(i).get(0));
+            for(String e: mergedmail[i]){
+                temp.add(e);
+            }
+            ans.add(temp);
+        }
+        return ans;
+    }
+}
+     
