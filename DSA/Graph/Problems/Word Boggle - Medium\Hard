@@ -1,0 +1,167 @@
+Problem Statement :
+Given a dictionary of distinct words and an M x N board where every cell has one character. Find all possible words from the dictionary that can be formed by a sequence of adjacent characters on the board. We can move to any of 8 adjacent characters
+
+Note: While forming a word we can move to any of the 8 adjacent cells. A cell can be used only once in one word.
+
+Example:
+Input: 
+N = 1
+dictionary = {"CAT"}
+R = 3, C = 3
+board = {{C,A,P},{A,N,D},{T,I,E}}
+Output:
+CAT
+Explanation: 
+C A P
+A N D
+T I E
+Words we got is denoted using same color.
+
+Example:
+Input:
+N = 4
+dictionary = {"GEEKS","FOR","QUIZ","GO"}
+R = 3, C = 3 
+board = {{G,I,Z},{U,E,K},{Q,S,E}}
+Output:
+GEEKS QUIZ
+Explanation: 
+G I Z
+U E K
+Q S E 
+Words we got is denoted using same color.
+
+Expected Time Complexity: O(N*W + R*C^2)
+Expected Auxiliary Space: O(N*W + R*C)
+
+topic tags : Recursion Graph Backtracking Trie
+
+Solution:
+class Node {
+    Node[] links = new Node[52];
+    boolean flag = false;
+
+    boolean containsKey(char ch) {
+        //return (links[ch - 'A'] != null);
+        if (ch >= 'a' && ch <= 'z') {
+            return (links[ch - 'a'] != null);
+        } else if (ch >= 'A' && ch <= 'Z') {
+            return (links[ch - 'A' + 26] != null); // Offset for uppercase letters
+        }
+        return false;
+    }
+
+    Node get(char ch) {
+        //return links[ch - 'A'];
+        if (ch >= 'a' && ch <= 'z') {
+            return links[ch - 'a'];
+        } 
+        else if (ch >= 'A' && ch <= 'Z') {
+            return links[ch - 'A' + 26];  // Offset for uppercase letters
+        }
+        return null; 
+    }
+
+    void put(char ch, Node node) {
+        //links[ch - 'A'] = node;
+        if (ch >= 'a' && ch <= 'z') {
+            links[ch - 'a'] = node;
+        } else if (ch >= 'A' && ch <= 'Z') {
+            links[ch - 'A' + 26] = node; // Offset for uppercase letters
+        }
+    }
+
+    void setEnd() {
+        flag = true;
+    }
+
+    boolean isEnd() {
+        return flag;
+    }
+}
+
+class Trie {
+    private Node root;
+
+    Trie() {
+        root = new Node();
+    }
+
+    public void insert(String word) {
+        Node node = root;
+        for (int i = 0; i < word.length(); i++) {
+            if (!node.containsKey(word.charAt(i))) {
+                node.put(word.charAt(i), new Node());
+            }
+            node = node.get(word.charAt(i));
+        }
+        node.setEnd();
+    }
+
+    public boolean searchWord(Node node, StringBuilder word) {
+        if (node.isEnd()) {
+            return true;
+        }
+        return false;
+    }
+
+    public Node getRoot() {
+        return root;
+    }
+}
+
+class Solution
+{
+    public String[] wordBoggle(char board[][], String[] dictionary)
+    {
+        // Write your code here
+        Trie trie = new Trie();
+        
+        for (String word : dictionary) {
+            trie.insert(word);
+        }
+        int a = dictionary.length;
+        Set<String> result = new HashSet<>(); 
+        
+        int m = board.length;
+        int n = board[0].length;
+        boolean [][] vis = new boolean[m][n];
+        for(int i = 0 ;i< m; i++){
+            for(int j = 0; j< n;j++){
+                dfs(board, vis, i, j, trie.getRoot(), new StringBuilder(),result, trie);
+            }
+        }
+        String[] array = result.toArray(new String[0]);
+        return array;
+        
+    }
+    public void dfs(char board[][], boolean [][] vis,int row,int col,Node node, StringBuilder sb,Set<String> result , Trie trie){
+        int m = board.length;
+        int n = board[0].length;
+        
+        if (row < 0 || col < 0 || row >= m || col >= n || vis[row][col] || !node.containsKey(board[row][col])) {
+            return;
+        }
+        
+        vis[row][col] = true;
+        
+        node = node.get(board[row][col]);
+        sb.append(board[row][col]);
+        if (node.isEnd()) {
+            result.add(sb.toString());
+        }
+        for(int drow = -1; drow<=1 ; drow++){
+            for(int dcol = -1; dcol<=1 ; dcol++){
+                if (!(drow == 0 && dcol == 0)) {
+                    int nrow = row + drow;
+                    int ncol = col + dcol;
+                    dfs(board, vis, nrow, ncol, node, sb, result, trie);
+                }
+            }
+        }
+        vis[row][col] = false;
+        sb.deleteCharAt(sb.length() - 1);
+        
+    }
+    
+}
