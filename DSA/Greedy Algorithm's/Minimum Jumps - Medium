@@ -1,0 +1,110 @@
+Problem Statement:
+Given an array arr[] of non-negative integers. Each array element represents the maximum length of the jumps that can be made forward from that element. This means if arr[i] = x, then we can jump any distance y such that y ≤ x.
+Find the minimum number of jumps to reach the end of the array starting from the first element. If an element is 0, then you cannot move through that element.
+Note:  Return -1 if you can't reach the end of the array.
+
+Examples : 
+Input: arr[] = {1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9}
+Output: 3 
+Explanation:First jump from 1st element to 2nd element with value 3. From here we jump to 5th element with value 9, and from here we will jump to the last. 
+
+Input: arr = {1, 4, 3, 2, 6, 7}
+Output: 2 
+Explanation: First we jump from the 1st to 2nd element and then jump to the last element.
+
+Input: arr = {0, 10, 20}
+Output: -1
+Explanation: We cannot go anywhere from the 1st element.
+Expected Time Complexity: O(n)
+Expected Space Complexity: O(1)
+
+Solution:
+Code (Brute Force): Time Complexity: O(2^n) due to the recursive calls. Space Complexity: O(n) due to the recursion stack.
+public class Solution {
+
+    public static int minJumps(int[] arr, int l, int h) {
+        // Base case: when source and destination are the same
+        if (h == l) {
+            return 0;
+        }
+
+        // When nothing is reachable from the given element
+        if (arr[l] == 0) {
+            return Integer.MAX_VALUE;
+        }
+
+        // Traverse through all the points reachable from arr[l]
+        // and recursively get the minimum number of jumps needed
+        int minJumps = Integer.MAX_VALUE;
+        for (int i = l + 1; i <= h && i <= l + arr[l]; i++) {
+            int jumps = minJumps(arr, i, h);
+            if (jumps != Integer.MAX_VALUE) {
+                minJumps = Math.min(minJumps, jumps + 1);
+            }
+        }
+
+        return minJumps;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9};
+        int n = arr.length;
+        System.out.println("Minimum number of jumps: " + minJumps(arr, 0, n - 1));
+    }
+}
+
+Dynamic Programming (Better Approach): Time Complexity: O(n^2) due to the nested loop. Space Complexity: O(n) for the dp[] array.
+import java.util.Arrays;
+
+public class Solution {
+
+    public static int minJumpsDP(int[] arr) {
+        int n = arr.length;
+        if (n == 1) return 0;
+
+        int[] dp = new int[n];
+        Arrays.fill(dp, Integer.MAX_VALUE); // Set initial values to infinity
+        dp[0] = 0;
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (i <= j + arr[j] && dp[j] != Integer.MAX_VALUE) {
+                    dp[i] = Math.min(dp[i], dp[j] + 1);
+                    break;
+                }
+            }
+        }
+
+        return dp[n - 1] == Integer.MAX_VALUE ? -1 : dp[n - 1];
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9};
+        System.out.println("Minimum number of jumps: " + minJumpsDP(arr));
+    }
+}
+
+
+Greedy Approach (Optimized Solution): Time Complexity: O(n) — Linear traversal through the array. Space Complexity: O(1) — Constant space.
+class Solution {
+    static int minJumps(int[] arr) {
+        int n = arr.length;
+        int l = 0;
+        int r = 0;
+        int jump = 0;
+        while(r<n-1){
+            int farthest = r;
+            for(int j = l;j<=r;j++){
+                farthest = Math.max(farthest, j + arr[j]);
+            }
+            if (farthest == r) {
+                return -1; 
+            }
+        
+            l = r+1;
+            r = farthest;
+            jump++;
+        }
+        return jump;
+    }
+}
