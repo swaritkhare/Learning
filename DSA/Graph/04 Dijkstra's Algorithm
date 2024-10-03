@@ -1,1 +1,163 @@
+Problem Statement:
+Given a weighted, undirected and connected graph of V vertices and an adjacency list adj where adj[i] is a list of lists containing two integers where the first integer of each list j denotes there is edge between i and j , second integers corresponds to the weight of that  edge . You are given the source vertex S and You to Find the shortest distance of all the vertex's from the source vertex S. You have to return a list of integers denoting shortest distance between each node and Source vertex S.
+Note: The Graph doesn't contain any negative weight cycle.
+
+The structure of adjacency list is as follows :-
+For Example : adj = {  {{1, 1}, {2, 6}}  , {{2, 3}, {0, 1}}  , {{1, 3}, {0, 6}}  }
+Here adj[i] contains a list which contains all the nodes which are connected to the ith vertex. Here adj[0] = {{1, 1}, {2, 6}} means there are two nodes conneced to the 0th node, node 1 with an edge weight of 1 and node 2 with an edge weight of 6 and similarly for other vertices.
+
+Example :
+Input:
+V = 2
+adj [] = {{{1, 9}}, {{0, 9}}}
+S = 0
+Output:
+0 9
+Explanation:
+The source vertex is 0. Hence, the shortest 
+distance of node 0 is 0 and the shortest 
+distance from node 1 is 9.
+
+Example:
+Input:
+V = 3, E = 3
+adj = {{{1, 1}, {2, 6}}, {{2, 3}, {0, 1}}, {{1, 3}, {0, 6}}}
+S = 2
+Output:
+4 3 0
+Explanation:
+For nodes 2 to 0, we can follow the path-
+2-1-0. This has a distance of 1+3 = 4,
+whereas the path 2-0 has a distance of 6. So,
+the Shortest path from 2 to 0 is 4.
+The shortest distance from 0 to 1 is 1 .
+
+Expected Time Complexity: O(V2).
+Expected Auxiliary Space: O(V2).
+
+Solution:
+class Solution
+{
+    class Pair {
+    int distance;
+    int node;
+
+    public Pair(int distance, int node) {
+        this.distance = distance;
+        this.node = node;
+    }
+}
+    //Function to find the shortest distance of all the vertices from the source vertex S.
+    static int[] dijkstra(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj, int S)
+    {
+        PriorityQueue<Pair> pq = new PriorityQueue<>((x, y) -> Integer.compare(x.distance, y.distance));
+
+        int [] dist = new int[V];
+        for( int i =0; i< V ; i++) dist[i] = (int)(1e9);
+        //Arrays.fill(dist, (int) 1e9);
+        
+        dist[S] = 0;
+        pq.add(new Solution().new Pair(0, S));
+        
+        while(!pq.isEmpty()){
+            int dis = pq.peek().distance;
+            int node = pq.peek().node;
+            pq.remove();
+            
+            for(int i = 0; i< adj.get(node).size() ; i++){
+                int edgeweight = adj.get(node).get(i).get(1);
+                int adjnode = adj.get(node).get(i).get(0);
+                
+                if(edgeweight + dis < dist[adjnode]){
+                    dist[adjnode] = edgeweight + dis;
+                    pq.add(new Solution().new Pair(dist[adjnode], adjnode));
+                }
+            }
+        }
+        return dist;
+        
+    }
+}
+
+Explanation:
+Definition:
+Dijkstra’s algorithm is a greedy algorithm used to find the shortest path from a source node to all other nodes in a graph with non-negative edge weights. The algorithm maintains a set of unvisited vertices and progressively builds the shortest path tree by selecting the vertex with the minimum distance from the source at each step.
+
+Key Concepts:
+Graph: Can be directed or undirected, but edge weights must be non-negative.
+Shortest Path: The minimum distance or cost from a starting vertex to a target vertex.
+Priority Queue: Often used to efficiently select the next vertex with the smallest distance.
+
+Steps:
+Initialization:
+Set the distance of the source vertex to 0 and all other vertices to infinity.
+Mark all vertices as unvisited and initialize an empty priority queue (min-heap).
+Push the source vertex with distance 0 into the priority queue.
+
+Processing:
+While there are unvisited vertices:
+Extract the vertex u with the smallest distance from the priority queue.
+For each neighbor v of u, calculate the potential new path distance d(u) + weight(u, v).
+If this new distance is smaller than the current distance d(v) to vertex v, update d(v) and push v into the priority queue.
+Mark vertex u as visited once all its neighbors have been relaxed.
+
+Termination:
+Continue this process until all vertices are processed or no vertices are left in the priority queue.
+
+Pseudocode:
+function Dijkstra(Graph, source):
+    dist[source] ← 0                           // Distance from source to source is set to 0
+    for each vertex v in Graph:
+        if v ≠ source:
+            dist[v] ← infinity                 // Distance to all other vertices is set to infinity
+        add v to the priority queue Q
+
+    while Q is not empty:
+        u ← vertex in Q with the smallest dist[u]
+        remove u from Q
+
+        for each neighbor v of u:
+            alt ← dist[u] + weight(u, v)
+            if alt < dist[v]:
+                dist[v] ← alt
+                // Update the priority queue
+                decrease priority of v in Q
+    return dist[]
+
+Time Complexity: Using Min-Heap: O((V + E) log V), where V is the number of vertices and E is the number of edges.
+
+Explanation:
+Extracting the minimum element from the priority queue takes O(log V).
+There are V such extractions, and each edge relaxation can potentially update the queue, which takes O(log V) per edge.
+Example:
+Consider a graph with vertices A, B, C, D, and edges with non-negative weights:
+A --1--> B --2--> C
+ |        |
+ 3        6
+ |        |
+ V        V
+ D --5--> C
+
+Starting from A, we initialize distances:
+dist[A] = 0, dist[B] = ∞, dist[C] = ∞, dist[D] = ∞
+Process vertex A:
+Relax edges: dist[B] = 1 and dist[D] = 3
+Process vertex B:
+Relax edges: dist[C] = 3
+Process vertex D:
+Relax edge: No update to dist[C] because it already has a shorter distance.
+Process vertex C:
+All neighbors processed, the shortest path tree is built.
+
+Why Dijkstra’s Algorithm Works:
+The algorithm is greedy: at each step, it selects the unvisited node with the smallest tentative distance. It relies on the fact that once a vertex is marked as "visited," the shortest path to that vertex is guaranteed.
+It processes nodes in the order of their distance from the source.
+
+Applications:
+Navigation systems (finding the shortest path on maps).
+Network routing protocols (finding the shortest data transmission route).
+Scheduling problems where minimizing the total cost or distance is essential.
+
+Limitations:
+Cannot handle negative edge weights: Dijkstra’s algorithm may fail or give incorrect results when there are negative-weight edges, as it assumes that once a vertex's shortest path is found, it will not be updated further.
 
