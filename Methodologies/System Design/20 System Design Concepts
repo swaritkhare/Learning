@@ -70,37 +70,45 @@ What is message queuing and how does it benefit a system with high data intake?
 Message queuing involves using a system like a message queue to persist data before it can be processed, especially when the system receives more data than it can handle. This not only helps in managing data flow but also decouples different parts of an application, improving system architecture and reliability.
 
 Mindmap
-Use Cases
-Queue Function
-BASE Theorem
-CAP Theorem
-NoSQL Databases
-SQL Databases
-API Patterns
-HTTP Protocol
-DNS Records
-DNS Function
-TCP/IP Protocol Suite
-IP Addresses
-Caching Techniques
-CDN Purpose
-Traffic Distribution Algorithms
-Load Balancer Function
-Horizontal Scaling
-Vertical Scaling
-Salary Increase
-Junior Developer to Senior Level
-Message Queues
-Data Consistency and Availability
-Database Management
-HTTP and Web Communication
-Domain Name System
-Computer Communication
-Content Delivery Networks
-Load Balancing
-Scalability Concepts
-Career Advancement
-System Design and Scalability
+                               |                      |- Junior Developer to Senior Level
+                               |- Career Advancement -| 
+                               |                      |- Salary Increase
+                               |
+                               |                        |- Vertical Scaling
+                               |- Scalability Concepts -|
+                               |                        |- Horizontal Scaling
+                               |
+                               |                  |- Load Balancer Function
+                               |- Load Balancing -| 
+                               |                  |- Traffic Distribution Algorithms
+                               |
+                               |                             |- CDN Purpose
+                               |- Content Delivery Networks -| 
+                               |                             |- Caching Techniques
+                               |
+                               |                          |- IP Addresses
+                               |- Computer Communication -|
+                               |                          |- TCP/IP Protocol Suite
+System Design and Scalability -|
+                               |                      |- DNS Function
+                               |- Domain Name System -| 
+                               |                      |- DNS Records
+                               |
+                               |                              |- HTTP Protocol
+                               |- HTTP and Web Communication -|
+                               |                              |- API Patterns
+                               |
+                               |                       |- SQL Databases
+                               |- Database Management -| 
+                               |                       |- NoSQL Databases
+                               |
+                               |                                     |- CAP Theorem
+                               |- Data Consistency and Availability -| 
+                               |                                     |- BASE Theorem
+                               |
+                               |                  |- Queue Function
+                               |- Message Queues -|
+                               |                  |- Use Cases
 
 Keywords
 💡Vertical Scaling
