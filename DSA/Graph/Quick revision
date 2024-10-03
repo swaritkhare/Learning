@@ -1,11 +1,8 @@
 Quick Revision Notes for Breadth-First Search (BFS)
-  Overview
-    Definition: BFS is an algorithm for traversing or searching tree or graph data structures level by level.
-    Goal: Explore all neighbors at the current depth prior to moving on to nodes at the next depth level.
-  Key Characteristics
-    Data Structure: Utilizes a queue to track the nodes to be explored next.
-    Traversal Order: Visits nodes in layers (level order traversal).
-    Shortest Path: Finds the shortest path in an unweighted graph.
+    BFS is an algorithm for traversing or searching tree or graph data structures level by level.
+    Utilizes a queue to track the nodes to be explored next.
+    Visits nodes in layers (level order traversal).
+    Finds the shortest path in an unweighted graph.
   Algorithm Steps
     Initialization: Start with a queue containing the starting node and a visited set.
     Process Loop: While the queue is not empty:
