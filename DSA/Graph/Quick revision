@@ -1,9 +1,13 @@
-Quick Revision Notes for Breadth-First Search (BFS)
+-> Quick Revision Notes for Breadth-First Search (BFS)
+    [Required : Queue, Visited Array]
+    [Time Complexity : O(V+E) || V = vertices, E = edges]
+    [Space Complexity : O(b^d)]
     BFS is an algorithm for traversing or searching tree or graph data structures level by level.
     Utilizes a queue to track the nodes to be explored next.
     Visits nodes in layers (level order traversal).
     Finds the shortest path in an unweighted graph.
-  Algorithm Steps
+    
+    Algorithm Steps
     Initialization: Start with a queue containing the starting node and a visited set.
     Process Loop: While the queue is not empty:
     Dequeue the front node.
@@ -11,7 +15,26 @@ Quick Revision Notes for Breadth-First Search (BFS)
     For each unvisited neighbor, mark it as visited and enqueue it.
     End Condition: The process continues until all reachable nodes are explored.
 
-  Space Complexity: O(b^d), where b is the branching factor and d is the depth of the shallowest goal node.
-  Time Complexity: O(V+E) where V is the number of vertices and E is the number of edges.
+    Space Complexity: O(b^d), where b is the branching factor and d is the depth of the shallowest goal node.
+    Time Complexity: O(V+E) where V is the number of vertices and E is the number of edges.
 
-Quick Revision Notes for Breadth-First Search (BFS)
+-> Quick Revision Notes for Depth-First Search (DFS)
+    [Required : Recursion, Visited Array]
+    [Time Complexity : O(V+E) || V = vertices, E = edges]
+    [Space Complexity : O(V)]
+    DFS is an algorithm for traversing or searching tree or graph structures, exploring as deep as possible along each branch before backtracking.
+    Time Complexity: O(V+E), where V is the number of vertices and E is the number of edges.
+    Space Complexity: O(V) (due to recursion or stack usage).
+    
+    Algorithm:
+    Start at a node.
+    Mark the node as visited.
+    Recursively visit all unvisited adjacent nodes.
+    Backtrack when no adjacent unvisited nodes are left.
+    
+    Applications:
+    Pathfinding (e.g., in mazes).
+    Cycle detection in graphs.
+    Topological sorting in DAGs.
+    Finding connected components in graphs.
+    Solving puzzles like N-Queens, Sudoku.
