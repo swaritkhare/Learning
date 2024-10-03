@@ -36,3 +36,4 @@ Benefits of SOLID Principles:
 Maintainability: SOLID principles make code easier to maintain by promoting separation of concerns.
 Scalability: They help in building systems that can grow without major refactoring.
 Testability: Following these principles often results in code that's easier to unit test, as each class has a clear responsibility and minimal dependencies.
+
