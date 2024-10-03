@@ -37,3 +37,11 @@ Maintainability: SOLID principles make code easier to maintain by promoting sepa
 Scalability: They help in building systems that can grow without major refactoring.
 Testability: Following these principles often results in code that's easier to unit test, as each class has a clear responsibility and minimal dependencies.
 
+Here is the mind map for the SOLID Principles. It visually summarizes the five core principles in object-oriented programming that help create more maintainable and scalable software systems:
+
+Single Responsibility Principle (SRP): Each class should have one and only one reason to change, focusing on a single responsibility.
+Open/Closed Principle (OCP): Software entities should be open for extension but closed for modification.
+Liskov Substitution Principle (LSP): Objects of a superclass should be replaceable with objects of a subclass without altering the correctness of the program.
+Interface Segregation Principle (ISP): Clients should not be forced to depend on interfaces they do not use; instead, split large interfaces into smaller ones.
+Dependency Inversion Principle (DIP): High-level modules should not depend on low-level modules but on abstractions, inverting the typical control flow.
+This structure helps in writing more modular, flexible, and scalable code.
