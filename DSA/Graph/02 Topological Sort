@@ -1,1 +1,112 @@
+Problem Statement:
+Given an adjacency list for a Directed Acyclic Graph (DAG) where adj_list[i] contains a list of all vertices j such that there is a directed edge from vertex i to vertex j, with  V  vertices and E  edges, your task is to find any valid topological sorting of the graph.
+In a topological sort, for every directed edge u -> v,  u must come before v in the ordering.
+
+Example :
+Input:
+Output:
+1
+Explanation:
+The output 1 denotes that the order is
+valid. So, if you have, implemented
+your function correctly, then output
+would be 1 for all test cases.
+One possible Topological order for the
+graph is 3, 2, 1, 0.
+
+Expected Time Complexity: O(V + E).
+Expected Auxiliary Space: O(V).
+
+Solution:
+
+
+/*Complete the function below*/
+
+
+class Solution
+{
+    //Function to return list containing vertices in Topological order. 
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    {
+        int [] vis = new int[V];
+        Stack<Integer> st = new Stack<>();
+        for(int i = 0; i< V; i++){
+            if(vis[i] == 0){
+                dfs(i,adj,vis,st);
+            }
+        }
+        int [] ans = new int[V];
+        int i =0;
+        while(!st.isEmpty()){
+            ans[i++] = st.peek();
+            st.pop();
+        }
+        return ans;
+    }
+    private static void dfs(int i, ArrayList<ArrayList<Integer>> adj, int [] vis, Stack<Integer> st){
+        vis[i] = 1;
+        for(int data: adj.get(i)){
+            if(vis[data] == 0){
+                dfs(data,adj,vis,st);
+            } 
+        }
+        st.push(i);
+    }
+}
+
+Explanantion:
+Definition:
+Topological Sort (Toposort) is an ordering of the vertices in a Directed Acyclic Graph (DAG) where, for each directed edge u→v, vertex u comes before v in the ordering. This sort is only possible in a DAG (no cycles).
+
+Applications:
+Dependency resolution: Useful in scheduling tasks, where some tasks must be done before others.
+Build systems: Where you need to compile dependencies in a specific order.
+Course scheduling: Courses with prerequisites.
+
+Properties:
+Unique Ordering: For some graphs, there can be multiple valid topological orders. If there are no incoming edges for any node, it can be chosen.
+Existence: Toposort is only possible if the graph has no cycles.
+Vertex Precedence: If there’s an edge u→v, then u will always appear before v in the order.
+
+DFS-Based Algorithm:
+Steps:
+Perform a DFS traversal of the graph.
+As the DFS finishes exploring a node, push it onto a stack.
+Once all vertices are visited, the stack contains the vertices in reverse topological order.
+
+Time Complexity: O(V+E).
+
+Simple DAG:
+Graph:
+Vertices: A, B, C, D, E, F
+Edges: A -> B, A -> C, B -> D, C -> D, D -> E, E -> F
+Topological Order: A -> B -> C -> D -> E -> F
+
+Multiple Valid Orders:
+Graph:
+Vertices: 1, 2, 3
+Edges: 1 -> 2, 1 -> 3
+Topological Orders: 1 -> 2 -> 3 or 1 -> 3 -> 2
+
+Cycle Detection:
+If there’s a cycle in the graph, a valid topological sort is impossible. This can be detected by:
+DFS: Checking if a node is visited but still in the recursion stack (back edge).
+Kahn’s Algorithm: If, after the algorithm finishes, the topological order contains fewer nodes than the graph, there’s a cycle.
+
+Important Concepts:
+DAG: A directed acyclic graph is essential for topological sorting.
+In-degree: The number of edges incoming to a node.
+Edge Types in DFS: Back edges indicate cycles, tree edges contribute to topological order.
+
+Key Use Cases:
+Build Dependencies: If a software module requires another, the build must follow the topological order.
+Task Scheduling: Order tasks such that prerequisites are met before dependent tasks.
+
+Conclusion:
+Topological sorting provides an essential tool in directed acyclic graphs (DAGs), particularly in scenarios requiring the processing of dependencies or sequencing tasks.
+
+
+
+
+
 
