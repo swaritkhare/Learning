@@ -1,1 +1,112 @@
+Problem Statement:
+Given an adjacency list for a Directed Acyclic Graph (DAG) where adj_list[i] contains a list of all vertices j such that there is a directed edge from vertex i to vertex j, with  V  vertices and E  edges, your task is to find any valid topological sorting of the graph.
+In a topological sort, for every directed edge u -> v,  u must come before v in the ordering.
 
+Solution:
+class Solution
+{
+    //Function to return list containing vertices in Topological order. 
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    {
+        int [] indeg = new int[V];
+        for(int i = 0; i< V ;i++){
+            for(int data : adj.get(i)){
+                indeg[data]++;
+            }
+        }
+        
+        Queue<Integer> q = new LinkedList<Integer>();
+        for(int i = 0; i< V ;i++){
+            if(indeg[i] == 0){
+                q.add(i);
+            }
+        }
+        int [] top = new int[V];
+        int i = 0;
+        while(!q.isEmpty()){
+            int rem = q.peek();
+            q.remove();
+            top[i++] = rem;
+            for(int data : adj.get(rem)){
+                indeg[data]--;
+                if(indeg[data] == 0){
+                    q.add(data);
+                }
+            }
+        }
+        return top;
+    }
+}
+Explanantion:
+Kahn’s Algorithm is a method used to perform a topological sort on a Directed Acyclic Graph (DAG). It is based on Breadth-First Search (BFS) and works by iteratively removing nodes with no incoming edges (in-degree 0) and ensuring that all dependencies are processed in the correct order.
+
+Steps of Kahn's Algorithm:
+Calculate In-Degree: For each node in the graph, compute the number of incoming edges (in-degree).
+Queue Initialization: Start with all nodes that have an in-degree of 0 (i.e., no dependencies). These are the starting points as they can be processed immediately.
+
+Process Nodes:
+Remove a node from the queue and add it to the topological order.
+For each neighbor (adjacent node) of this node, reduce its in-degree by 1 (since the edge from the processed node has been removed).
+If a neighbor’s in-degree becomes 0, add it to the queue since all its dependencies have been processed.
+Cycle Detection: If, after processing all nodes, the topological order contains fewer nodes than the graph, then the graph contains a cycle, and topological sorting is not possible.
+
+Output: Once the queue is empty, the topological order contains all nodes in the correct sequence.
+
+Time Complexity:O(V+E), where V is the number of vertices and E is the number of edges. This is because each node is processed once and each edge is processed once.
+
+Example:
+Given a graph:
+
+Vertices: A, B, C, D, E, F
+Edges: A → B, A → C, B → D, C → D, D → E, E → F
+Step-by-Step Execution:
+Calculate in-degree:
+A: 0, B: 1, C: 1, D: 2, E: 1, F: 1
+Queue Initialization: Start with A (in-degree 0).
+
+Processing:
+Process A: Reduce in-degree of B and C. Add B and C to the queue.
+Process B: Reduce in-degree of D.
+Process C: Further reduce in-degree of D (D now has in-degree 0, so add it to the queue).
+Process D: Reduce in-degree of E.
+Process E: Reduce in-degree of F.
+Process F.
+Topological Order: A → B → C → D → E → F.
+
+Key Points:
+Kahn’s algorithm is efficient for topological sorting in DAGs.
+It uses BFS, ensuring that nodes with no incoming edges are processed first.
+The algorithm can also detect cycles by checking if the final topological order contains all vertices.
+This approach is crucial in scenarios like task scheduling, build order dependencies, and resolving package installation orders.
+
+Why is Kahn's algo required?
+Kahn’s Algorithm and DFS-based topological sort both solve the problem of finding a topological order in a Directed Acyclic Graph (DAG), but each has distinct characteristics and use cases. Here’s why Kahn's Algorithm is still necessary despite the availability of DFS-based topological sorting:
+
+1. Order of Vertex Processing:
+Kahn’s Algorithm (BFS approach): Processes nodes in the order of their in-degree (vertices with in-degree 0 are processed first). This ensures that nodes are processed level by level, making it easier to track which nodes have no dependencies remaining.
+DFS-based Topological Sort: Processes nodes in reverse order of their finishing time in DFS. It’s more of a depth-based approach, so it doesn’t explicitly track dependencies as clearly as Kahn’s does.
+
+2. Cycle Detection:
+Kahn’s Algorithm naturally checks for cycles in the graph because if any node with a non-zero in-degree remains unprocessed, it indicates a cycle.
+DFS-based approach can also detect cycles using a recursive stack, but it requires additional mechanisms like maintaining visited states and checking for back edges. Kahn's algorithm inherently handles cycle detection more intuitively.
+
+3. Ease of Implementation:
+Kahn’s Algorithm: Since it uses BFS, it might be easier to grasp and implement when you are explicitly dealing with in-degrees (number of incoming edges) for cycle detection and sorting.
+DFS-based Topological Sort: Requires additional care with recursion and may be harder to implement and debug, especially for novice developers.
+
+4. In-degree vs. Out-degree Focus:
+Kahn’s Algorithm is focused on in-degrees (number of incoming edges), which directly represents how many dependencies a node has before it can be processed.
+DFS focuses more on out-degree (edges going out of the node) as it explores from a node until all reachable nodes are visited.
+
+5. Cycle Identification and Failure Handling:
+Kahn’s Algorithm can directly return a failure (or detect a cycle) if the number of processed vertices is less than the total number of vertices, providing a clear indication of a cycle in the graph.
+DFS-based Topological Sort: If a cycle exists, the recursive approach will fail, but detecting and understanding the failure requires more nuanced tracking (like visited states and recursion stack).
+
+6. Breadth vs. Depth Exploration:
+Kahn’s Algorithm is a breadth-first approach, making it better suited for level-order tasks, where you need to process nodes level by level, respecting the in-degree constraints.
+DFS-based Topological Sort explores nodes deeply first, making it harder to visualize or work with immediate dependencies or levels of tasks.
+
+Use Cases:
+Kahn's Algorithm is often preferred in problems where explicit cycle detection is necessary or when tasks with dependencies need to be handled in an easily understandable order.
+DFS-based Topological Sort is more useful when you need to quickly generate a topological order without extra concerns about cycles (or if you’re already using DFS for another purpose).
+Both algorithms have their strengths, but Kahn’s Algorithm provides more explicit handling of dependencies and cycles, making it essential in certain scenarios, especially when working with in-degree constraints.
