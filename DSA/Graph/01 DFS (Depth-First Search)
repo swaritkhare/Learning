@@ -1,1 +1,92 @@
+Problem Statement:
+You are given a connected undirected graph. Perform a Depth First Traversal of the graph.
+Note: Use the recursive approach to find the DFS traversal of the graph starting from the 0th vertex from left to right according to the graph.
 
+Example :
+Input: V = 5 , adj = [[2,3,1] , [0], [0,4], [0], [2]]
+Output: 0 2 4 3 1
+Explanation: 
+0 is connected to 2, 3, 1.
+1 is connected to 0.
+2 is connected to 0 and 4.
+3 is connected to 0.
+4 is connected to 2.
+so starting from 0, it will go to 2 then 4,
+and then 3 and 1.
+Thus dfs will be 0 2 4 3 1.
+
+Solution:
+
+
+class Solution {
+    // Function to return a list containing the DFS traversal of the graph.
+    public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+        ArrayList < Integer> bfs = new ArrayList<>();
+        boolean [] vis = new boolean[V];
+        
+        dfs(0,vis, bfs,adj);
+        return bfs;
+    }
+    
+    public void dfs(int data, boolean [] vis , ArrayList<Integer> bfs, ArrayList<ArrayList<Integer>> adj){
+        vis[data] = true;
+        bfs.add(data);
+            for( Integer e : adj.get(data)){
+                if(vis[e] == false){
+                    dfs(e,vis, bfs,adj);
+                }
+            }
+    }
+}
+
+Explanation:
+Overview:
+Definition: DFS is an algorithm for traversing or searching tree or graph data structures. It starts at the root (or any arbitrary node) and explores as far as possible along each branch before backtracking.
+Goal: The primary goal of DFS is to explore all the vertices or nodes of a graph, typically used to explore all possible paths or connections in a systematic way.
+
+Characteristics:
+Type: DFS is a recursive, depth-driven algorithm.
+Traversal Order: DFS goes as deep as possible into one path before backtracking to explore other paths (contrary to BFS, which explores neighbors first).
+Data Structure: DFS uses a stack (often implicitly through recursion or explicitly using an actual stack data structure).
+
+Space Complexity: O(V), where V is the number of vertices.
+Time Complexity: O(V+E), where V is the number of vertices and E is the number of edges.
+
+DFS Algorithm Steps:
+Starting Point: Begin with a starting node (source).
+Visit Node: Mark the node as visited.
+Recursively Visit Neighbors: For each unvisited adjacent node, recursively apply DFS.
+Backtrack: Once all the neighbors are visited, backtrack to explore other unvisited paths.
+End Condition: Continue until all nodes have been explored.
+
+Key Use Cases of DFS:
+Topological Sorting: In directed acyclic graphs (DAGs), DFS is used for topological ordering.
+Cycle Detection: DFS helps detect cycles in graphs.
+Connected Components: Useful in determining if all nodes are connected or finding connected subgraphs.
+Maze/Path Finding: DFS can be used to explore all paths and backtrack in mazes or network graphs.
+Solving Puzzles: DFS is useful for puzzles like Sudoku and N-Queens, which involve exploring all possible configurations.
+
+DFS Traversal Example:
+Consider the following graph:
+    1
+   / \
+  2   3
+ /     \
+4       5
+Starting from node 1, DFS would traverse in this order: 1 -> 2 -> 4, backtrack, then explore 3 -> 5.
+
+Differences Between DFS and BFS:
+Exploration Method: DFS explores depth first (goes deeper), while BFS explores breadth first (explores neighbors first).
+Data Structure: DFS uses a stack (recursively or explicitly), while BFS uses a queue.
+Use Case: DFS is used when the complete exploration of paths is required, such as in solving puzzles or cycle detection, while BFS is used for finding shortest paths in unweighted graphs.
+
+Applications:
+Maze Solving: DFS can explore all possible paths and backtrack when a dead end is reached.
+Detecting Cycles in Graphs: Used to detect back edges in directed graphs to find cycles.
+
+Topological Sorting: In a directed acyclic graph (DAG), DFS helps in topologically sorting the nodes by visiting all vertices in a depth-first manner.
+Finding Strongly Connected Components: DFS can be used to find all SCCs in a directed graph using Kosaraju's algorithm.
+
+Variants:
+DFS on Trees: In tree traversal, DFS is often referred to as Preorder, Inorder, or Postorder traversal.
+Backtracking: DFS forms the basis of many backtracking algorithms (like N-Queens, solving mazes, etc.).
