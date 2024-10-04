@@ -92,3 +92,52 @@
     DFS: Depth-first exploration, adds nodes to the stack as they finish processing.
     Kahn's Algorithm: Level-order (BFS) processing based on in-degrees.
     Cycle Detection: Both algorithms can detect cycles, but Kahn's algorithm handles it more naturally by detecting unprocessed nodes.
+
+-> Quick Revision Notes for Dijkstra's Algorithm
+    [Required :  Priority Queue, distance array]
+    [Time Complexity : O((V + E) log V) || V = vertices, E = edges]
+    Purpose: Finds the shortest path from a source node to all other nodes in a graph with non-negative weights.
+    Key Characteristics:
+        Greedy algorithm.
+        Works only for graphs with non-negative edge weights.
+        Efficient with priority queues (typically a min-heap).
+    Steps:
+        Initialize:
+        Set the distance of the source node to 0 and all other nodes to infinity (∞).
+        Use a priority queue to hold nodes sorted by distance.
+        Process Nodes:
+        Extract the node with the minimum distance.
+        For each of its adjacent nodes, calculate the potential new path.
+        If this path is shorter than the current known path, update the distance and push the node into the priority queue.
+        Terminate:
+        When all nodes have been processed or the queue is empty, the shortest paths from the source to all other nodes are found.
+        Time Complexity: O((V + E) log V): Efficient with a priority queue (min-heap).
+        Limitations: Cannot handle negative edge weights.
+    Applications:
+        Navigation systems.
+        Network routing.
+        Shortest path problems in graphs with non-negative weights.
+    Example:
+    For a graph where each node is connected to others with positive weights, starting from a source node will result in finding the minimum cost/distance to all other nodes.
+    Pseudocode:
+    function Dijkstra(Graph, source):
+        dist[source] ← 0
+        for each vertex v in Graph:
+            if v ≠ source:
+                dist[v] ← infinity
+            add v to the priority queue Q
+    
+        while Q is not empty:
+            u ← vertex in Q with the smallest dist[u]
+            remove u from Q
+    
+            for each neighbor v of u:
+                alt ← dist[u] + weight(u, v)
+                if alt < dist[v]:
+                    dist[v] ← alt
+                    update the priority queue
+        return dist[]
+    
+    Alternative Algorithms:
+        Bellman-Ford Algorithm: Works with negative weights but is slower (O(V * E)).
+        Floyd-Warshall Algorithm: Solves the shortest path for all pairs of nodes but with O(V³) complexity.
