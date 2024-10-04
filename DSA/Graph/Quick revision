@@ -168,3 +168,53 @@
         Relax all edges V-1 times.
         Check for negative weight cycles.
     This algorithm is essential when working with graphs containing negative edge weights, especially in network routing or financial systems where costs can fluctuate negatively.
+
+-> Quick Revision Notes for Bellman-Ford Algorithm
+    [Required : adjacency matrix, directed or undirected weighted graphs, positive weights and negative weights, but no negative weight cycles, 2d distance array ]
+    [Time Complexity : O(V³) || V = vertices]
+    [Space Complexity : O(V²) for the distance matrix]
+    Purpose:
+        All-Pairs Shortest Path Algorithm: The Floyd-Warshall algorithm is used to find the shortest paths between all pairs of vertices in a weighted graph.
+        Works on both directed and undirected graphs.
+        Can handle negative weights, but not negative weight cycles.
+    Graph Type:
+        Input: Weighted graph represented as an adjacency matrix.
+        Output: Matrix of shortest distances between every pair of vertices.
+    Key Idea:
+        For each pair of vertices (i, j), check whether the shortest path from i to j can be improved by passing through another vertex k.
+        The idea is based on dynamic programming:
+        dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+    Algorithm Steps:
+        Initialize the distance matrix (dist[][]):
+        If there is an edge from vertex i to vertex j with weight w, set dist[i][j] = w.
+        If i == j, set dist[i][j] = 0 (distance to itself).
+        Otherwise, set dist[i][j] = ∞ (no direct edge).
+        Iterate over each intermediate vertex k:
+        For every pair of vertices (i, j), update the shortest path through vertex k:
+        dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
+        Check for negative cycles:
+        After completing the algorithm, if dist[i][i] < 0 for any vertex i, a negative cycle exists.
+    Time Complexity:
+        O(V³) where V is the number of vertices.
+    Space Complexity:
+        O(V²) for the distance matrix.
+    Example:
+        Input graph (adjacency matrix):
+            0    3    ∞    ∞
+            ∞    0    1    ∞
+            ∞    ∞    0    7
+            6    ∞    ∞    0
+        Output shortest distances (after running Floyd-Warshall):
+            0    3    4    11
+            9    0    1    8
+            6    9    0    7
+            6    9    10   0
+    Use Cases:
+        Routing algorithms in network routing.
+        Analysis of transitive closure of a graph.
+        Finding shortest paths in dense graphs with all-pairs queries.
+    Pros and Cons:
+        Pros: Simple, handles negative weights, finds all-pairs shortest paths.
+        Cons: Time complexity is high for large graphs (O(V³)), not suitable for sparse graphs.
+    This algorithm is particularly useful when the graph is dense or when you need to compute shortest paths between all pairs of nodes, especially with negative weights but no negative weight cycles.
+
