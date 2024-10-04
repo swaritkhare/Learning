@@ -86,3 +86,134 @@ class Main {
 
    }
 }
+
+Job Sequencing Problem using Disjoint Set Union (DSU) involves optimizing job scheduling where jobs have deadlines, and you want to maximize profit. Each job has a fixed deadline and can be scheduled for one unit of time. You cannot perform two jobs at the same time, and each job should be completed by its deadline.
+
+Problem Overview:
+You are given N jobs where each job i has a:
+Profit P[i]
+Deadline D[i]
+Objective: Schedule the jobs to maximize the total profit while ensuring that no job's deadline is missed.
+DSU Approach for Job Sequencing:
+Why DSU?
+We use Disjoint Set Union (DSU) to keep track of the latest available time slots for scheduling jobs efficiently.
+
+Steps:
+Sort Jobs by Profit:
+
+Sort the jobs in descending order of profit. This ensures that we try to schedule the most profitable job first.
+DSU for Slot Management:
+
+Use DSU to manage the available slots dynamically.
+Each element represents a time slot, and DSU helps to efficiently find the latest available slot where a job can be scheduled before its deadline.
+Job Scheduling:
+
+For each job, attempt to schedule it on its deadline or the latest available slot before its deadline.
+Use DSU to find the next available time slot when a slot is taken.
+If a slot is free, perform a union of the current slot with the previous slot.
+Detailed Steps:
+Sort jobs by profit in descending order.
+
+Initialize DSU with parent[i] = i for each time slot.
+
+For each job:
+
+Check if there is a free slot available by using find(deadline).
+If available, assign the job to the slot and update DSU by merging (union) the slot with the previous one (slot - 1).
+Continue this for all jobs and maximize the profit.
+
+Code Implementation in Java:
+java
+Copy code
+import java.util.*;
+
+class Job {
+    int id, profit, deadline;
+    
+    Job(int id, int profit, int deadline) {
+        this.id = id;
+        this.profit = profit;
+        this.deadline = deadline;
+    }
+}
+
+class DSU {
+    int[] parent;
+    
+    public DSU(int n) {
+        parent = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            parent[i] = i;
+        }
+    }
+    
+    public int find(int x) {
+        if (parent[x] == x)
+            return x;
+        return parent[x] = find(parent[x]);
+    }
+    
+    public void union(int x, int y) {
+        parent[find(x)] = find(y);
+    }
+}
+
+public class JobSequencingWithDSU {
+    public static int jobScheduling(Job[] jobs, int n) {
+        // Sort jobs by profit in descending order
+        Arrays.sort(jobs, (a, b) -> b.profit - a.profit);
+        
+        // Find maximum deadline
+        int maxDeadline = 0;
+        for (Job job : jobs) {
+            maxDeadline = Math.max(maxDeadline, job.deadline);
+        }
+        
+        // Initialize DSU for slot management
+        DSU dsu = new DSU(maxDeadline);
+        
+        int totalProfit = 0;
+        
+        // Iterate over each job
+        for (Job job : jobs) {
+            // Find the latest available slot before or on job.deadline
+            int availableSlot = dsu.find(job.deadline);
+            
+            if (availableSlot > 0) {
+                // Assign the job to this slot and update DSU
+                dsu.union(availableSlot, availableSlot - 1);
+                totalProfit += job.profit;
+            }
+        }
+        
+        return totalProfit;
+    }
+    
+    public static void main(String[] args) {
+        Job[] jobs = {
+            new Job(1, 100, 2),
+            new Job(2, 19, 1),
+            new Job(3, 27, 2),
+            new Job(4, 25, 1),
+            new Job(5, 15, 3)
+        };
+        
+        int n = jobs.length;
+        System.out.println("Maximum Profit: " + jobScheduling(jobs, n));
+    }
+}
+Explanation of Code:
+Job class: Represents each job with its id, profit, and deadline.
+DSU class: Manages the time slots using a parent array.
+jobScheduling function:
+Jobs are sorted by profit.
+The DSU is used to find the latest available time slot for scheduling.
+If a slot is available, the job is assigned, and the total profit is updated.
+Time Complexity:
+Sorting the jobs: O(N log N).
+DSU operations (find and union) for each job: nearly O(1), due to path compression.
+Overall time complexity: O(N log N), which is efficient for job sequencing.
+Advantages of DSU:
+Efficient slot management.
+Reduces the complexity of checking and assigning free slots.
+This approach guarantees maximum profit by ensuring that each job is scheduled as late as possible, allowing the most profitable jobs to be prioritized.
