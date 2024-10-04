@@ -6,15 +6,13 @@
     Utilizes a queue to track the nodes to be explored next.
     Visits nodes in layers (level order traversal).
     Finds the shortest path in an unweighted graph.
-    
     Algorithm Steps
-    Initialization: Start with a queue containing the starting node and a visited set.
-    Process Loop: While the queue is not empty:
-    Dequeue the front node.
-    Process the node (e.g., print its value).
-    For each unvisited neighbor, mark it as visited and enqueue it.
-    End Condition: The process continues until all reachable nodes are explored.
-
+        Initialization: Start with a queue containing the starting node and a visited set.
+        Process Loop: While the queue is not empty:
+        Dequeue the front node.
+        Process the node (e.g., print its value).
+        For each unvisited neighbor, mark it as visited and enqueue it.
+        End Condition: The process continues until all reachable nodes are explored.
     Space Complexity: O(b^d), where b is the branching factor and d is the depth of the shallowest goal node.
     Time Complexity: O(V+E) where V is the number of vertices and E is the number of edges.
 
@@ -25,19 +23,17 @@
     DFS is an algorithm for traversing or searching tree or graph structures, exploring as deep as possible along each branch before backtracking.
     Time Complexity: O(V+E), where V is the number of vertices and E is the number of edges.
     Space Complexity: O(V) (due to recursion or stack usage).
-    
     Algorithm:
-    Start at a node.
-    Mark the node as visited.
-    Recursively visit all unvisited adjacent nodes.
-    Backtrack when no adjacent unvisited nodes are left.
-    
+        Start at a node.
+        Mark the node as visited.
+        Recursively visit all unvisited adjacent nodes.
+        Backtrack when no adjacent unvisited nodes are left.
     Applications:
-    Pathfinding (e.g., in mazes).
-    Cycle detection in graphs.
-    Topological sorting in DAGs.
-    Finding connected components in graphs.
-    Solving puzzles like N-Queens, Sudoku.
+        Pathfinding (e.g., in mazes).
+        Cycle detection in graphs.
+        Topological sorting in DAGs.
+        Finding connected components in graphs.
+        Solving puzzles like N-Queens, Sudoku.
 
 -> Quick Revision Notes for Topological Sort:
     [Required : DAG's, Recursion, Stack, Visited Array]
@@ -46,23 +42,20 @@
     Topological Sorting is an ordering of vertices in a directed graph where for every directed edge u -> v, vertex u comes before v in the ordering.
     Applicable only for Directed Acyclic Graphs (DAGs), i.e., graphs without cycles.
     Use Cases: Task scheduling, course prerequisite problems, resolving dependencies between tasks, etc.
-    
     DFS-based Topological Sort:
-    Perform DFS from each unvisited node.
-    Post-order: Once DFS completes for a node (i.e., all its descendants are visited), push it onto a stack.
-    The topological order is obtained by popping all nodes from the stack (the first node out is the last in topological order).
-    Cycle Detection: If a back edge is found, a cycle exists, meaning topological sorting isn't possible.
-    Time Complexity: O(V + E), where V is the number of vertices, and E is the number of edges.
-    
+        Perform DFS from each unvisited node.
+        Post-order: Once DFS completes for a node (i.e., all its descendants are visited), push it onto a stack.
+        The topological order is obtained by popping all nodes from the stack (the first node out is the last in topological order).
+        Cycle Detection: If a back edge is found, a cycle exists, meaning topological sorting isn't possible.
+        Time Complexity: O(V + E), where V is the number of vertices, and E is the number of edges.
     Steps:
-    Initialize an empty stack and a visited array.
-    For each unvisited node, run DFS.
-    After visiting all nodes in the DFS, add the node to the stack.
-    Once all nodes are visited, pop from the stack to get the topological sort.
-    
+        Initialize an empty stack and a visited array.
+        For each unvisited node, run DFS.
+        After visiting all nodes in the DFS, add the node to the stack.
+        Once all nodes are visited, pop from the stack to get the topological sort.
     Key Points:
-    DFS focuses on out-degree.
-    Cycle detection requires maintaining a recursion stack.
+        DFS focuses on out-degree.
+        Cycle detection requires maintaining a recursion stack.
 
 -> Quick Revision Notes for Kahn's Algorithm (BFS-based Topological Sort):
     [Required : DAG's, Queue, In-degree Array,]
@@ -74,23 +67,20 @@
     Remove the node from the graph.
     Reduce the in-degree of all its neighbors.
     Add neighbors with in-degree 0 to the processing queue.
-    
     Cycle Detection: If the number of processed nodes is less than the total number of nodes, the graph contains a cycle.
     Steps:
-    Compute in-degree of all vertices.
-    Enqueue all vertices with in-degree 0.
-    While the queue is not empty, remove a vertex, add it to the topological order, and reduce in-degree of its neighbors. If a neighbor’s in-degree becomes 0, enqueue it.
-    If there are nodes left unprocessed at the end, the graph contains a cycle.
-    Time Complexity: O(V + E).
-    
+        Compute in-degree of all vertices.
+        Enqueue all vertices with in-degree 0.
+        While the queue is not empty, remove a vertex, add it to the topological order, and reduce in-degree of its neighbors. If a neighbor’s in-degree becomes 0, enqueue it.
+        If there are nodes left unprocessed at the end, the graph contains a cycle.
+        Time Complexity: O(V + E).
     Key Points:
-    Kahn’s Algorithm is based on in-degree.
-    Naturally handles cycle detection.
-    Processes nodes level by level in BFS order.
-    
+        Kahn’s Algorithm is based on in-degree.
+        Naturally handles cycle detection.
+        Processes nodes level by level in BFS order.
     Comparison of DFS and Kahn's Algorithm:
-    DFS: Depth-first exploration, adds nodes to the stack as they finish processing.
-    Kahn's Algorithm: Level-order (BFS) processing based on in-degrees.
+        DFS: Depth-first exploration, adds nodes to the stack as they finish processing.
+        Kahn's Algorithm: Level-order (BFS) processing based on in-degrees.
     Cycle Detection: Both algorithms can detect cycles, but Kahn's algorithm handles it more naturally by detecting unprocessed nodes.
 
 -> Quick Revision Notes for Dijkstra's Algorithm
@@ -103,22 +93,23 @@
         Efficient with priority queues (typically a min-heap).
     Steps:
         Initialize:
-        Set the distance of the source node to 0 and all other nodes to infinity (∞).
-        Use a priority queue to hold nodes sorted by distance.
+            Set the distance of the source node to 0 and all other nodes to infinity (∞).
+            Use a priority queue to hold nodes sorted by distance.
         Process Nodes:
-        Extract the node with the minimum distance.
-        For each of its adjacent nodes, calculate the potential new path.
-        If this path is shorter than the current known path, update the distance and push the node into the priority queue.
+            Extract the node with the minimum distance.
+            For each of its adjacent nodes, calculate the potential new path.
+            If this path is shorter than the current known path, update the distance and push the node into the priority queue.
         Terminate:
-        When all nodes have been processed or the queue is empty, the shortest paths from the source to all other nodes are found.
-        Time Complexity: O((V + E) log V): Efficient with a priority queue (min-heap).
-        Limitations: Cannot handle negative edge weights.
+            When all nodes have been processed or the queue is empty, the shortest paths from the source to all other nodes are found.
+            Time Complexity: O((V + E) log V): Efficient with a priority queue (min-heap).
+        Limitations: 
+            Cannot handle negative edge weights.
     Applications:
         Navigation systems.
         Network routing.
         Shortest path problems in graphs with non-negative weights.
     Example:
-    For a graph where each node is connected to others with positive weights, starting from a source node will result in finding the minimum cost/distance to all other nodes.
+        For a graph where each node is connected to others with positive weights, starting from a source node will result in finding the minimum cost/distance to all other nodes.
     Pseudocode:
     function Dijkstra(Graph, source):
         dist[source] ← 0
@@ -137,7 +128,40 @@
                     dist[v] ← alt
                     update the priority queue
         return dist[]
-    
     Alternative Algorithms:
         Bellman-Ford Algorithm: Works with negative weights but is slower (O(V * E)).
         Floyd-Warshall Algorithm: Solves the shortest path for all pairs of nodes but with O(V³) complexity.
+
+-> Quick Revision Notes for Bellman-Ford Algorithm
+    Purpose:
+        Finds the shortest path from a source vertex to all other vertices in a graph.
+        Works for graphs with negative weights and can detect negative weight cycles.
+    Key Concepts:
+        Relaxation: For each edge (u, v) with weight w, update the shortest path estimate if a shorter path is found.
+        Negative Weight Cycle: The algorithm detects these by performing one extra iteration to check if any distances are still being updated.
+    Steps:
+        Initialization:
+            Set distance from the source to itself as 0.
+            Set distances to all other vertices as infinity.
+        Relaxation:
+            Repeat for V-1 times (where V is the number of vertices), relaxing all edges.
+        Negative Cycle Detection:
+            Perform one more relaxation step. If any edge can still be relaxed, it means the graph has a negative weight cycle.
+    Time Complexity:
+        O(V * E), where V is the number of vertices and E is the number of edges.
+    Advantages:
+        Handles negative weights.
+        Detects negative weight cycles.
+    Disadvantages:
+        Slower than Dijkstra for graphs without negative weights.
+    Use Cases:
+        Networks with negative routing costs.
+        Financial calculations where debt or cost can be negative.
+    Comparison with Dijkstra:
+        Bellman-Ford can handle negative weights; Dijkstra cannot.
+        Dijkstra is faster for non-negative weight graphs.
+    Code Structure:
+        Initialize distances.
+        Relax all edges V-1 times.
+        Check for negative weight cycles.
+    This algorithm is essential when working with graphs containing negative edge weights, especially in network routing or financial systems where costs can fluctuate negatively.
