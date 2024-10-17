@@ -37,14 +37,6 @@ class TrieNode {
     void increasePrefix() {
         cntPrefix++;
     }
-
-    void deleteEnd() {
-        cntEndWith--;
-    }
-
-    void reducePrefix() {
-        cntPrefix--;
-    }
 }
 
 class Trie {
