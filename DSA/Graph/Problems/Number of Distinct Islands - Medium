@@ -1,0 +1,77 @@
+Problem Statement:
+Given a boolean 2D matrix grid of size n * m. You have to find the number of distinct islands where a group of connected 1s (horizontally or vertically) forms an island. Two islands are considered to be distinct if and only if one island is not equal to another (not rotated or reflected).
+
+Example 1:
+Input:
+grid[][] = {{1, 1, 0, 0, 0},
+            {1, 1, 0, 0, 0},
+            {0, 0, 0, 1, 1},
+            {0, 0, 0, 1, 1}}
+Output:
+1
+Explanation:
+grid[][] = {{1, 1, 0, 0, 0}, 
+            {1, 1, 0, 0, 0}, 
+            {0, 0, 0, 1, 1}, 
+            {0, 0, 0, 1, 1}}
+Same colored islands are equal.
+We have 2 equal islands, so we 
+have only 1 distinct island.
+
+Example 2:
+Input:
+grid[][] = {{1, 1, 0, 1, 1},
+            {1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1},
+            {1, 1, 0, 1, 1}}
+Output:
+3
+Explanation:
+grid[][] = {{1, 1, 0, 1, 1}, 
+            {1, 0, 0, 0, 0}, 
+            {0, 0, 0, 0, 1}, 
+            {1, 1, 0, 1, 1}}
+Same colored islands are equal.
+We have 4 islands, but 2 of them
+are equal, So we have 3 distinct islands.
+
+Expected Time Complexity: O(n * m)
+Expected Space Complexity: O(n * m)
+
+Solution:
+class Solution {
+
+    int countDistinctIslands(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int [][] vis = new int[m][n];
+        HashSet<ArrayList<String>> set = new HashSet<>();
+        for(int i = 0; i< m ;  i++){
+            for(int j = 0; j< n ; j++){
+                if(vis[i][j] == 0 && grid[i][j] == 1){
+                    ArrayList<String> ar = new ArrayList<>();
+                    dfs(i,j,ar,vis,grid,i,j);
+                    set.add(ar);
+                }
+            }
+        }
+        return set.size();
+        
+    }
+    
+    void dfs(int row, int col, ArrayList<String> ar, int [][] vis, int[][] grid, int brow, int bcol ){
+        vis[row][col] = 1;
+        int m = grid.length;
+        int n = grid[0].length;
+        ar.add(Integer.toString(row - brow) + Integer.toString(col - bcol));
+        int [] drow = {-1,0,+1,0};
+        int [] dcol = {0,+1,0,-1};
+        for(int i = 0; i< 4; i++){
+            int nrow = row + drow[i];
+            int ncol = col + dcol[i];
+            if(nrow >= 0 && nrow <m && ncol >=0 && ncol < n && grid[nrow][ncol] == 1 && vis[nrow][ncol] == 0){
+                dfs(nrow,ncol,ar,vis,grid,brow,bcol);
+            }
+        }
+    }
+}
