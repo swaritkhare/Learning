@@ -1,0 +1,23 @@
+Problem Statement:
+Given an array of strings arr[] of size N, find if there exists 2 strings arr[i] and arr[j] such that arr[i]+arr[j] is a palindrome i.e the concatenation of string arr[i] and arr[j] results into a palindrome.
+
+Example 1:
+Input:
+N = 6
+arr[] = {"geekf", "geeks", "or","keeg", "abc", 
+          "bc"}
+Output: 1 
+Explanation: There is a pair "geekf"
+and "keeg".
+Example 2:
+Input:
+N = 5
+arr[] = {"abc", "xyxcba", "geekst", "or", "bc"}
+Output: 1
+Explanation: There is a pair "abc"
+and "xyxcba".
+
+Expected Time Complexity: O(N*l2) where l = length of longest string in arr[]
+Expected Auxiliary Space: O(N*l2) where l = length of longest string in arr[]
+
+Solution:
