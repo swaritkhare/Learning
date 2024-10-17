@@ -1,0 +1,28 @@
+Problem Statement:
+Given an array of words, find all shortest unique prefixes to represent each word in the given array. Assume that no word is prefix of another.
+
+Example 1:
+Input: 
+N = 4
+arr[] = {"zebra", "dog", "duck", "dove"}
+Output: z dog du dov
+Explanation: 
+z => zebra 
+dog => dog 
+duck => du 
+dove => dov 
+Example 2:
+Input: 
+N = 3
+arr[] =  {"geeksgeeks", "geeksquiz",
+                       "geeksforgeeks"};
+Output: geeksg geeksq geeksf
+Explanation: 
+geeksgeeks => geeksg 
+geeksquiz => geeksq 
+geeksforgeeks => geeksf
+
+Expected Time Complexity: O(N*length of each word)
+Expected Auxiliary Space: O(N*length of each word)
+
+Solution:
