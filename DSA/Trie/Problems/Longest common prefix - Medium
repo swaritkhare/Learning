@@ -21,3 +21,65 @@ Expected time complexity: O(NlogN)
 Expected space complexity: O(string length)
 
 Solution:
+class TrieNode {
+    TrieNode[] children = new TrieNode[26]; // For storing lowercase English letters
+    boolean isEndOfWord = false; // Marks if the node is the end of a word
+    int childrenCount = 0; // To keep track of how many children the node has
+}
+
+class Trie {
+    TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Insert a word into the Trie
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+            if (node.children[index] == null) {
+                node.children[index] = new TrieNode();
+                node.childrenCount++;
+            }
+            node = node.children[index];
+        }
+        node.isEndOfWord = true;
+    }
+
+    // Find the longest common prefix by traversing the Trie
+    public String longestCommonPrefix() {
+        TrieNode node = root;
+        StringBuilder prefix = new StringBuilder();
+        while (node.childrenCount == 1 && !node.isEndOfWord) {
+            for (int i = 0; i < 26; i++) {
+                if (node.children[i] != null) {
+                    prefix.append((char) (i + 'a'));
+                    node = node.children[i];
+                    break;
+                }
+            }
+        }
+        return prefix.toString();
+    }
+}
+
+class Solution
+{
+    public String lcp(String s[],int n)
+    {
+        if (s == null || s.length == 0) return "-1";
+        Trie trie = new Trie();
+        // Insert all the strings into the Trie
+        for (String word : s) {
+            trie.insert(word);
+        }
+        // Find the longest common prefix
+        String lcp = trie.longestCommonPrefix();
+        return lcp.isEmpty() ? "-1" : lcp;
+        
+        
+    }
+}
+
