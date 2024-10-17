@@ -25,3 +25,84 @@ Expected Time Complexity: O(Q*x) + O(N*L) Where Q is the number of queries, x is
 Expected Auxiliary Space: O(N*List [i])
 
 Solution:
+class TrieNode {
+    TrieNode[] children = new TrieNode[26]; // For storing lowercase English letters
+    int cntEndWith = 0;
+    int cntPrefix = 0;
+    
+    void increaseEnd() {
+            cntEndWith++;
+    }
+
+    void increasePrefix() {
+        cntPrefix++;
+    }
+
+    void deleteEnd() {
+        cntEndWith--;
+    }
+
+    void reducePrefix() {
+        cntPrefix--;
+    }
+}
+
+class Trie {
+    TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Insert a word into the Trie
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+            if (node.children[index] == null) {
+                node.children[index] = new TrieNode();
+            }
+            node = node.children[index];
+            node.increasePrefix();
+        }
+        node.increaseEnd();
+    }
+    int countWordsEqualTo(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+            if (node.children[index] == null) {
+                return 0;
+            } 
+            node = node.children[index];
+        }
+        return node.cntEndWith;
+    }
+
+    int countWordsStartingWith(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+            if (node.children[index] == null) {
+                return 0;
+            }
+            node = node.children[index];
+        }
+        return node.cntPrefix;
+    }
+
+}
+class Solution{
+    static List<Integer> prefixCount(int N, int Q, String li[], String query[])
+    {
+        List<Integer> result = new ArrayList<>();
+        Trie trie = new Trie();
+        for (String word : li) {
+            trie.insert(word);
+        }
+        for (String word : query) {
+            result.add(trie.countWordsStartingWith(word));
+        }
+        return result;
+    }
+}
