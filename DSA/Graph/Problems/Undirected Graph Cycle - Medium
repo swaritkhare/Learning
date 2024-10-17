@@ -1,0 +1,70 @@
+Problem Statement:
+Given an undirected graph with V vertices labelled from 0 to V-1 and E edges, check whether it contains any cycle or not. Graph is in the form of adjacency list where adj[i] contains all the nodes ith node is having edge with.
+NOTE: The adjacency list denotes the edges of the graph where edges[i] stores all other vertices to which ith vertex is connected.
+
+Examples:
+Input: V = 5, E = 5
+adj = [[1], [0, 2, 4], [1, 3], [2, 4], [1, 3]] 
+Output: 1
+Explanation: 1->2->3->4->1 is a cycle.
+ 
+Input: V = 4, E = 2
+adj = [[], [2], [1, 3], [2]]
+Output: 0
+Explanation: No cycle in the graph.
+
+Solution:
+class Solution {
+    class pair{
+        int first;
+        int second;
+        public pair(int first, int second){
+            this.first = first;
+            this.second = second;
+        }
+    }
+    // Function to detect cycle in an undirected graph using DFS & BFS.
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        boolean [] vis = new boolean[V];
+        for(int i =0; i<V; i++){
+            if(vis[i] == false){
+                //if(detectbfs(i,vis,adj)) return true;
+                if(detectdfs(i,-1,vis,adj)) return true;
+            }
+        }
+        return false;
+    }
+    private boolean detectbfs(int src, boolean[] vis, ArrayList<ArrayList<Integer>> adj){
+        vis[src] = true;
+        Queue<pair> q = new LinkedList<pair>();
+        q.add(new pair(src,-1));
+        while(!q.isEmpty()){
+            int a = q.peek().first;
+            int b = q.peek().second;
+            q.remove();
+            for( int data : adj.get(a)){
+                if(vis[data] == false){
+                    vis[data] = true;
+                    q.add(new pair(data,a));
+                }
+                else if(b != data){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean detectdfs(int src,int parent, boolean[] vis, ArrayList<ArrayList<Integer>> adj){
+        vis[src] = true;
+        for( int data : adj.get(src)){
+            if(vis[data] == false){
+                vis[data] = true;
+                if(detectdfs(data,src,vis,adj) == true) return true;
+            }
+            else if(parent != data){
+                return true;
+            }
+        }
+        return false;
+    }
+}
