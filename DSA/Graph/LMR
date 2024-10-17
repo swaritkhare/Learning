@@ -1,1 +1,38 @@
+1. Graph Representations:
+Adjacency Matrix: A 2D array, where matrix[i][j] is 1 (or weight) if there is an edge between nodes i and j. Space complexity is O(V²).
+Adjacency List: Array of lists; each list corresponds to a node and contains all its adjacent nodes. Space complexity is O(V + E).
 
+2. Graph Types:
+Directed Graph: Edges have direction.
+Undirected Graph: Edges don’t have direction.
+Weighted Graph: Edges have weights.
+Unweighted Graph: All edges have the same weight.
+
+3. Traversal Algorithms:
+Breadth-First Search (BFS): Traverses the graph level by level. Utilizes a queue and visits all neighbors of a node before moving to the next level. Used for finding shortest paths in unweighted graphs.
+Depth-First Search (DFS): Explores as far as possible along each branch before backtracking. Utilizes a stack (or recursion) and can be used for detecting cycles, connectivity, etc.
+
+4. Shortest Path Algorithms:
+Dijkstra’s Algorithm: Finds the shortest path in a graph with non-negative weights. Uses a priority queue (min-heap).
+Bellman-Ford Algorithm: Handles graphs with negative weights and detects negative cycles. Time complexity: O(VE).
+Floyd-Warshall Algorithm: Finds shortest paths between all pairs of vertices. Time complexity: O(V³).
+
+5. Minimum Spanning Tree (MST):
+Prim’s Algorithm: Greedy approach to build the MST. It grows the MST one vertex at a time.
+Kruskal’s Algorithm: Greedy approach that sorts edges and adds them one by one, using a Disjoint Set (Union-Find) to avoid cycles.
+
+6. Topological Sorting:
+Kahn’s Algorithm: A BFS-based approach to find topological sorting in DAGs (Directed Acyclic Graphs).
+DFS-based Topological Sort: Uses DFS to push nodes into a stack in the order of completion.
+
+7. Cycle Detection:
+Undirected Graph: Detect cycles using DFS and parent tracking.
+Directed Graph: Detect cycles using DFS and maintaining a recursion stack or using Kahn’s algorithm.
+
+8. Connected Components:
+Strongly Connected Components (SCC): Found using Kosaraju’s or Tarjan’s Algorithm in directed graphs.
+Articulation Points and Bridges: Found using DFS and used to find critical connections.
+
+9. Other Concepts:
+Bipartite Graph: Graph whose vertices can be divided into two disjoint sets. Can be checked using BFS/DFS.
+Eulerian Path/Circuit: Exists if the graph has exactly 0 or 2 vertices of odd degree (for the path) or all vertices have even degree (for the circuit).
