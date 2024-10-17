@@ -67,18 +67,6 @@ class Trie {
         }
         node.increaseEnd();
     }
-    int countWordsEqualTo(String word) {
-        TrieNode node = root;
-        for (char c : word.toCharArray()) {
-            int index = c - 'a';
-            if (node.children[index] == null) {
-                return 0;
-            } 
-            node = node.children[index];
-        }
-        return node.cntEndWith;
-    }
-
     int countWordsStartingWith(String word) {
         TrieNode node = root;
         for (char c : word.toCharArray()) {
