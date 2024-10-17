@@ -1,3 +1,6 @@
+# A linear graph is always Bipartite.
+# A even circular graph is always Bipartite.
+
 Problem Statement:
 Given an adjacency list of a graph adj of V no. of vertices having 0 based index. Check whether the graph is bipartite or not.
 
