@@ -1,0 +1,94 @@
+Problem Statement:
+Given an array arr containing N words consisting of lowercase characters. Your task is to find the most frequent word in the array. If multiple words have same frequency, then print the word whose first occurence occurs last in the array as compared to the other strings with same frequency.
+
+Example 1:
+Input:
+N = 3
+arr[] = {geeks,for,geeks}
+Output: geeks
+Explanation: "geeks" comes 2 times.
+Example 2:
+Input:
+N = 2
+arr[] = {hello,world}
+Output: world
+Explanation: "hello" and "world" both
+have 1 frequency. We print world as
+its first occurence comes last in the
+input array.
+
+Expected Time Complexity: O(N * WORD_LEN)
+Expected Auxiliary Space: O(N * WORD_LEN)
+
+Solution:
+class Node{
+    Node [] children = new Node[26];
+    int cntEndWith = 0;
+    int cntPrefix = 0;
+    
+    void increaseEnd() {
+        cntEndWith++;
+    }
+
+    void increasePrefix() {
+        cntPrefix++;
+    }
+    
+}
+class Trie {
+    Node root;
+    HashMap<String, Integer> wordFrequency;
+
+    public Trie() {
+        root = new Node();
+        wordFrequency = new HashMap<>();
+    }
+
+    // Insert a word into the Trie
+    public void insert(String word) {
+        Node node = root;
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+            if (node.children[index] == null) {
+                node.children[index] = new Node();
+            }
+            node = node.children[index];
+            node.increasePrefix();
+        }
+        node.increaseEnd();
+        wordFrequency.put(word, wordFrequency.getOrDefault(word, 0) + 1);
+    }
+    public int getFrequency(String word) {
+        return wordFrequency.getOrDefault(word, 0);
+    }
+}
+
+class Solution
+{
+    //Function to find most frequent word in an array of strings.
+    public String mostFrequentWord(String arr[],int n)
+    {
+        Trie trie = new Trie();
+        String mostFrequent = "";
+        int maxFrequency = 0;
+        int lastOccurrence = -1; // To track the most recent occurrence of the word
+        
+        for (int i = 0; i < n; i++) {
+            String word = arr[i];
+            trie.insert(word);
+            int frequency = trie.getFrequency(word);
+            
+            // Update most frequent word if this word has higher frequency
+            // or if the frequency is the same but it occurred later in the array
+            if (frequency > maxFrequency || 
+               (frequency == maxFrequency && lastOccurrence < i)) {
+                mostFrequent = word;
+                maxFrequency = frequency;
+                lastOccurrence = i;
+            }
+        }
+        
+        return mostFrequent;
+    }
+
+}
