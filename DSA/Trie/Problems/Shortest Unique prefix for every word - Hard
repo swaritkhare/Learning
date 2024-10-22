@@ -14,8 +14,7 @@ dove => dov
 Example 2:
 Input: 
 N = 3
-arr[] =  {"geeksgeeks", "geeksquiz",
-                       "geeksforgeeks"};
+arr[] =  {"geeksgeeks", "geeksquiz","geeksforgeeks"};
 Output: geeksg geeksq geeksf
 Explanation: 
 geeksgeeks => geeksg 
@@ -26,3 +25,73 @@ Expected Time Complexity: O(N*length of each word)
 Expected Auxiliary Space: O(N*length of each word)
 
 Solution:
+class Node{
+    Node [] children = new Node[26];
+    int cntEndWith = 0;
+    int cntPrefix = 0;
+    
+    void increaseEnd() {
+        cntEndWith++;
+    }
+
+    void increasePrefix() {
+        cntPrefix++;
+    }
+    
+}
+class Trie {
+    Node root;
+
+    public Trie() {
+        root = new Node();
+    }
+
+    // Insert a word into the Trie
+    public void insert(String word) {
+        Node node = root;
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+            if (node.children[index] == null) {
+                node.children[index] = new Node();
+            }
+            node = node.children[index];
+            node.increasePrefix();
+        }
+        node.increaseEnd();
+    }
+
+    String countWordsStartingWith(String word) {
+        Node node = root;
+        StringBuilder prefix = new StringBuilder();
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+            if (node.children[index] == null) {
+                return null;
+            }
+            node = node.children[index];
+            prefix.append(c);
+            if (node.cntPrefix == 1) {
+                // Found a unique prefix
+                return prefix.toString();
+            }
+        }
+        return prefix.toString();
+    }
+
+}
+
+class Solution {
+    static String[] findPrefixes(String[] arr, int N) {
+        // code here
+        String [] result = new String[N];
+        Trie trie = new Trie();
+        for (String word : arr) {
+            trie.insert(word);
+        }
+        for(int i = 0; i< N ;i++){
+            result[i] = trie.countWordsStartingWith(arr[i]);
+        }
+        return result;
+        
+    }
+};
