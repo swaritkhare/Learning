@@ -24,3 +24,84 @@ Expected time complexity: O(n*l+|A|2) where l is the leght of longest string pre
 Expected auxiliary space: O(|A| + k) , where k = sum of length of all strings present in B
 
 Solution:
+class TrieNode {
+    TrieNode[] children = new TrieNode[26]; // For storing lowercase English letters
+    int cntEndWith = 0;
+    int cntPrefix = 0;
+    
+    void increaseEnd() {
+            cntEndWith++;
+    }
+
+    void increasePrefix() {
+        cntPrefix++;
+    }
+}
+
+class Trie {
+    TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Insert a word into the Trie
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+            if (node.children[index] == null) {
+                node.children[index] = new TrieNode();
+            }
+            node = node.children[index];
+            node.increasePrefix();
+        }
+        node.increaseEnd();
+    }
+    boolean search(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+            if (node.children[index] == null) {
+                return false;
+            } 
+            node = node.children[index];
+        }
+        return node.cntEndWith > 0;
+    }
+}
+
+class Solution
+{
+    public static int wordBreak(String A, ArrayList<String> B )
+    {
+        Trie trie = new Trie();
+        for(String word : B){
+            trie.insert(word);
+        }
+        return solve(A, trie, 0) ? 1 : 0;
+    }
+    public static boolean solve(String A, Trie trie, int pos) {
+        if (pos == A.length()) {
+            // If we reach the end of the string, return true (successful segmentation)
+            return true;
+        }
+
+        // Traverse the string from the current position
+        for (int i = pos; i < A.length(); i++) {
+            // Extract the substring from pos to i+1
+            String currentSubstring = A.substring(pos, i + 1);
+            
+            // If the current substring exists in the Trie, proceed with recursion
+            if (trie.search(currentSubstring)) {
+                // If the rest of the string can be segmented, return true
+                if (solve(A, trie, i + 1)) {
+                    return true;
+                }
+            }
+        }
+
+        // If no valid segmentation is found, return false
+        return false;
+    }
+}
