@@ -1,3 +1,5 @@
+https://www.youtube.com/watch?v=_jDNAf3CzeY
+
 Each principle—Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion—is broken down and illustrated using a series of shape classes (Circle, Square, Cube, etc.) and an AreaCalculator. The video emphasizes how following these principles results in cleaner, maintainable, and extensible code, and helps prevent common coding mistakes known as 'code smells.' The tutorial is perfect for developers looking to improve their software design skills and implement best practices.
 
 Takeaways
