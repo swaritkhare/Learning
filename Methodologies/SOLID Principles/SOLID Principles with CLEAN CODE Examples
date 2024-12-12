@@ -1,0 +1,53 @@
+Each principle—Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion—is broken down and illustrated using a series of shape classes (Circle, Square, Cube, etc.) and an AreaCalculator. The video emphasizes how following these principles results in cleaner, maintainable, and extensible code, and helps prevent common coding mistakes known as 'code smells.' The tutorial is perfect for developers looking to improve their software design skills and implement best practices.
+
+Takeaways
+😀 The SOLID principles are crucial for writing maintainable, scalable, and clean object-oriented code.
+😀 Single Responsibility Principle (SRP) states that a class should have only one reason to change, focusing on a single task.
+😀 Open/Closed Principle (OCP) encourages software entities to be open for extension but closed for modification, enabling easier changes.
+😀 Liskov Substitution Principle (LSP) ensures that subclasses can replace their parent classes without affecting the program's functionality.
+😀 Interface Segregation Principle (ISP) advocates splitting large interfaces into smaller, more specific ones to avoid unnecessary implementations.
+😀 Dependency Inversion Principle (DIP) emphasizes that high-level modules should not depend on low-level modules, both should depend on abstractions.
+😀 Using interfaces allows you to extend functionality without modifying existing code, ensuring the Open/Closed Principle is applied.
+😀 Refactoring code to follow SOLID principles improves code readability, maintainability, and testability.
+😀 Applying SOLID principles helps reduce 'code smells' and makes code easier to refactor and scale over time.
+😀 Practical implementation of SOLID can be seen in examples like splitting the `AreaCalculator` and `ShapesPrinter` into separate responsibilities to better adhere to SRP and OCP.
+Q & A
+What is the SOLID acronym and what does it represent?
+-
+SOLID is an acronym representing five object-oriented design principles: Single Responsibility Principle (SRP), Open/Closed Principle (OCP), Liskov Substitution Principle (LSP), Interface Segregation Principle (ISP), and Dependency Inversion Principle (DIP). These principles help software engineers write cleaner, more maintainable, and scalable code.
+
+How does the Single Responsibility Principle (SRP) apply in the video example?
+-
+In the video, the Single Responsibility Principle is demonstrated by refactoring a class that originally handled both calculating areas and printing results in different formats. The responsibility of printing results was moved to a separate class (ShapePrinter), ensuring that each class has a single responsibility.
+
+Why is the Open/Closed Principle important for software scalability?
+-
+The Open/Closed Principle states that classes should be open for extension but closed for modification. In the video, this is demonstrated by adding new shapes (like Cube and Rectangle) without modifying the existing `AreaCalculator` class. Instead, new shapes are added via interfaces, which allows the code to scale without changing existing implementations.
+
+What does the Liskov Substitution Principle (LSP) ensure in object-oriented design?
+-
+Liskov Substitution Principle ensures that subclasses can be substituted for their base class without causing errors or unexpected behavior. In the video, this principle is violated when a 'NoShape' class is used as a shape that doesn't implement the required 'area' method, leading to errors. A correct implementation would ensure that any subclass of 'Shape' can be used interchangeably.
+
+How does Interface Segregation Principle (ISP) improve code design?
+-
+The Interface Segregation Principle suggests that interfaces should not force classes to implement methods they do not need. In the video, this principle is applied by separating the `Shape` interface from a new `ThreeDimensionalShape` interface, allowing 2D shapes (like Circle and Rectangle) to implement only area, while 3D shapes (like Cube) also implement volume.
+
+Can you explain how Dependency Inversion Principle (DIP) is implemented in the video?
+-
+Dependency Inversion Principle is implemented by introducing an abstraction (`IAreaCalculator` interface) for the `AreaCalculator` class. Instead of depending on concrete implementations, higher-level modules (like `ShapePrinter`) depend on abstractions, which allows different versions of `AreaCalculator` (like `AreaCalculatorV2`) to be injected without changing the `ShapePrinter` class.
+
+Why should you avoid adding new functionality by modifying existing classes, according to the Open/Closed Principle?
+-
+Modifying existing classes to add new functionality can lead to code that is harder to maintain and extend. By adhering to the Open/Closed Principle, new features can be added by extending classes or interfaces, without altering the existing codebase, ensuring backward compatibility and minimizing the risk of introducing bugs.
+
+What role do interfaces play in following SOLID principles?
+-
+Interfaces are key to implementing several SOLID principles. They provide a way to define contracts for functionality (e.g., `Shape` or `IShape`) that can be implemented by multiple classes. This promotes flexibility (Open/Closed and Dependency Inversion), ensures substitutability (Liskov Substitution), and allows for fine-grained control over method requirements (Interface Segregation).
+
+How does the video suggest handling changes to functionality in a codebase?
+-
+The video suggests handling changes by implementing interfaces and using dependency injection. This allows you to swap out implementations (e.g., a different version of `AreaCalculator`) without changing the dependent classes, thus adhering to the Open/Closed Principle and ensuring that new functionality can be added without modifying existing code.
+
+What is the significance of dependency injection in adhering to the Dependency Inversion Principle?
+-
+Dependency injection allows classes to depend on abstractions rather than concrete implementations, promoting flexibility and scalability. In the video, dependency injection is demonstrated by passing different `AreaCalculator` implementations (e.g., `AreaCalculatorV2`) into the `ShapePrinter` class without modifying the class itself, which adheres to the Dependency Inversion Principle.
