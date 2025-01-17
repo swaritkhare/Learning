@@ -1,1 +1,204 @@
+Factory Method Design Pattern
+The Factory Method Pattern is a creational design pattern used to define an interface or abstract class for creating an object, but it allows the subclasses to decide which class to instantiate. This promotes loose coupling by eliminating the need to bind application-specific classes into the code.
 
+Key Concepts
+
+Problem it Solves:
+  Avoids direct instantiation of objects using new to enhance flexibility and scalability.
+  Facilitates adding new types of products without modifying the existing code.
+
+Participants:
+
+  Product: The interface or abstract class that defines the type of objects the factory creates.
+  Concrete Product: The classes implementing the Product interface.
+  Creator: The abstract class or interface declaring the factory method.
+  Concrete Creator: Implements the factory method to create specific products.
+
+Example: Factory Method Pattern
+  Let's create a shape-drawing system using the Factory Method pattern.
+    Step 1: Define the Product Interface   
+      // Product interface
+      public interface Shape {
+          void draw();
+      }
+
+    Step 2: Create Concrete Products
+      // Concrete Product: Circle
+      public class Circle implements Shape {
+          @Override
+          public void draw() {
+              System.out.println("Drawing a Circle.");
+          }
+      }
+      
+      // Concrete Product: Rectangle
+      public class Rectangle implements Shape {
+          @Override
+          public void draw() {
+              System.out.println("Drawing a Rectangle.");
+          }
+      }
+      
+      // Concrete Product: Triangle
+      public class Triangle implements Shape {
+          @Override
+          public void draw() {
+              System.out.println("Drawing a Triangle.");
+          }
+      }
+
+    Step 3: Define the Creator
+      // Creator (abstract class)
+      public abstract class ShapeFactory {
+          // Factory method to be implemented by subclasses
+          public abstract Shape createShape();
+      
+          // Common behavior for all shapes
+          public void drawShape() {
+              Shape shape = createShape(); // Factory method usage
+              shape.draw();
+          }
+      }
+
+    Step 4: Create Concrete Creators
+      // Concrete Creator: Circle Factory
+      public class CircleFactory extends ShapeFactory {
+          @Override
+          public Shape createShape() {
+              return new Circle();
+          }
+      }
+      
+      // Concrete Creator: Rectangle Factory
+      public class RectangleFactory extends ShapeFactory {
+          @Override
+          public Shape createShape() {
+              return new Rectangle();
+          }
+      }
+      
+      // Concrete Creator: Triangle Factory
+      public class TriangleFactory extends ShapeFactory {
+          @Override
+          public Shape createShape() {
+              return new Triangle();
+          }
+      }
+
+    Step 5: Client Code
+      public class FactoryMethodDemo {
+          public static void main(String[] args) {
+              // Use different factories to create and draw shapes
+              ShapeFactory circleFactory = new CircleFactory();
+              ShapeFactory rectangleFactory = new RectangleFactory();
+              ShapeFactory triangleFactory = new TriangleFactory();
+      
+              // Draw shapes
+              circleFactory.drawShape();    // Output: Drawing a Circle.
+              rectangleFactory.drawShape(); // Output: Drawing a Rectangle.
+              triangleFactory.drawShape();  // Output: Drawing a Triangle.
+          }
+      }
+
+Advantages
+  Encapsulation: Creation logic is encapsulated in the factory class.
+  Open/Closed Principle: Adding new product types doesn’t modify existing code, only requires creating a new factory class.
+  Reusability: Factory method code can be reused by multiple clients.
+
+Disadvantages
+  Increased Complexity: Requires creating a hierarchy of factory and product classes, which can be overkill for simpler systems.
+  Subclasses Dependency: Requires implementing new subclasses for every new product.
+
+Real-World Examples
+  Java Collections Framework: List, Set, and Map interfaces use factory methods like List.of(), Set.of(), etc., to create immutable collections.
+  Database Connectivity: DriverManager.getConnection() method in JDBC is a factory method.
+
+
+Role of Concrete Creators
+  The Concrete Creator classes in the Factory Method pattern are responsible for implementing the factory method to produce different types of products. 
+  This allows for:Encapsulation of object creation logic specific to each type of product.
+  The ability to add new product types without modifying existing code (adherence to the Open/Closed Principle).
+
+Can We Skip Concrete Creators?
+  Yes, it’s possible to simplify the pattern when:
+  The Product Creation Logic is Simple: If the creation logic doesn’t vary significantly or doesn’t involve complex initialization steps.
+  Fewer Product Types: If there are only a few products, you might not need separate creator classes for each one.
+  Instead, you could define:
+  A single factory class with methods to create different types of products.
+  Avoid creating separate Concrete Creators for each product type.
+
+Simplified Example Without Concrete Creators
+Here’s how you can implement the Factory Method pattern without explicit Concrete Creators:
+
+Step 1: Define the Product Interface
+public interface Shape {
+    void draw();
+}
+Step 2: Create Concrete Products
+public class Circle implements Shape {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a Circle.");
+    }
+}
+
+public class Rectangle implements Shape {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a Rectangle.");
+    }
+}
+Step 3: Single Factory Class
+public abstract class ShapeFactory {
+    public abstract Shape createShape(String type);
+
+    public void drawShape(String type) {
+        Shape shape = createShape(type);
+        if (shape != null) {
+            shape.draw();
+        } else {
+            System.out.println("Invalid Shape Type");
+        }
+    }
+}
+Step 4: Concrete Factory
+public class SimpleShapeFactory extends ShapeFactory {
+    @Override
+    public Shape createShape(String type) {
+        switch (type.toLowerCase()) {
+            case "circle":
+                return new Circle();
+            case "rectangle":
+                return new Rectangle();
+            default:
+                return null;
+        }
+    }
+}
+Step 5: Client Code
+public class FactoryMethodSimplifiedDemo {
+    public static void main(String[] args) {
+        ShapeFactory factory = new SimpleShapeFactory();
+
+        factory.drawShape("circle");    // Output: Drawing a Circle.
+        factory.drawShape("rectangle"); // Output: Drawing a Rectangle.
+        factory.drawShape("triangle");  // Output: Invalid Shape Type
+    }
+}
+
+Advantages of Simplified Approach
+  Less Boilerplate Code: No need to define multiple Concrete Creator classes.
+  Straightforward Design: Easier to implement for simpler use cases.
+
+Disadvantages of Skipping Concrete Creators
+  Violates Open/Closed Principle: Adding a new product (e.g., Triangle) requires modifying the factory’s createShape method, which increases coupling and potential for bugs.
+  Reduced Extensibility: If each product requires complex initialization logic, a single factory class may become bloated and harder to maintain.
+
+When to Use Concrete Creators
+  Scalable Applications: When you expect to add more product types over time.
+  Complex Initialization: When different products require significantly different creation logic.
+  Dynamic Behavior: When you want each product creation logic to reside in its own class for better modularity.
+
+Conclusion
+  Concrete Creators are beneficial for modular, extensible designs but can be skipped for simpler systems.
+  Without Concrete Creators, you rely on a single factory class, making it easier to implement but harder to extend without modifying the factory itself.
