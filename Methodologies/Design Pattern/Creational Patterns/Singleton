@@ -1,4 +1,4 @@
-Singleton Design Pattern in Depth
+Singleton Design Pattern
 The Singleton Design Pattern ensures that a class has only one instance throughout the application lifecycle and provides a global access point to that instance. It is a creational design pattern.
 
 1. Key Features
