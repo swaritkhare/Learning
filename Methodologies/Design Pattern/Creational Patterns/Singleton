@@ -4,7 +4,7 @@
 // for thread safety
 // how to break it using reflection API
 
-**Singleton Design Pattern in Depth**
+# Singleton Design Pattern in Depth
 1. Introduction
   The Singleton Design Pattern ensures that a class has only one instance throughout the application lifecycle and provides a global access point to that instance. It is a creational design pattern.
 
