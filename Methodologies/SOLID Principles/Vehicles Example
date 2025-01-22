@@ -1,0 +1,167 @@
+1. Vehicles Example (SOLID Principles)
+
+1.1 Single Responsibility Principle (SRP)
+Each class should have one responsibility.
+
+// SRP: Vehicle is responsible for vehicle behavior
+public class Vehicle {
+    private Engine engine;
+    
+    public Vehicle(Engine engine) {
+        this.engine = engine;
+    }
+
+    public void start() {
+        engine.start();
+    }
+
+    public void stop() {
+        engine.stop();
+    }
+}
+
+// SRP: Engine is responsible for engine behavior
+public class Engine {
+    public void start() {
+        System.out.println("Engine started.");
+    }
+
+    public void stop() {
+        System.out.println("Engine stopped.");
+    }
+}
+In this example, the Vehicle class is responsible for vehicle operations, while the Engine class is responsible for engine operations. Each class has one responsibility.
+
+1.2 Open/Closed Principle (OCP)
+Classes should be open for extension but closed for modification.
+
+// OCP: Base class for vehicle
+public abstract class Vehicle {
+    public abstract void start();
+}
+
+// OCP: Car extends Vehicle and adds specific behavior
+public class Car extends Vehicle {
+    @Override
+    public void start() {
+        System.out.println("Car is starting.");
+    }
+}
+
+// OCP: Bike extends Vehicle and adds specific behavior
+public class Bike extends Vehicle {
+    @Override
+    public void start() {
+        System.out.println("Bike is starting.");
+    }
+}
+You can add new vehicle types (like Car or Bike) without modifying the Vehicle class. You only extend it and implement specific behavior.
+
+1.3 Liskov Substitution Principle (LSP)
+Objects of a superclass should be replaceable with objects of a subclass without affecting the behavior.
+
+// LSP: Car and Bike can be substituted for Vehicle
+public class VehicleTest {
+    public static void testVehicle(Vehicle vehicle) {
+        vehicle.start();
+    }
+
+    public static void main(String[] args) {
+        Vehicle myCar = new Car();
+        Vehicle myBike = new Bike();
+
+        testVehicle(myCar); // Outputs: "Car is starting."
+        testVehicle(myBike); // Outputs: "Bike is starting."
+    }
+}
+Here, both Car and Bike can be used wherever a Vehicle is expected, without changing the logic.
+
+1.4 Interface Segregation Principle (ISP)
+Clients should not be forced to depend on interfaces they do not use.
+
+// ISP: Segregate interfaces for different vehicle functions
+public interface Engineable {
+    void start();
+    void stop();
+}
+
+public interface Honkable {
+    void honk();
+}
+
+public class Car implements Engineable, Honkable {
+    @Override
+    public void start() {
+        System.out.println("Car starting.");
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Car stopping.");
+    }
+
+    @Override
+    public void honk() {
+        System.out.println("Car honking.");
+    }
+}
+
+public class Bike implements Engineable {
+    @Override
+    public void start() {
+        System.out.println("Bike starting.");
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Bike stopping.");
+    }
+}
+In this example, Car implements both Engineable and Honkable, while Bike only implements Engineable. Clients (like Bike) do not need to implement methods that are irrelevant to them.
+
+1.5 Dependency Inversion Principle (DIP)
+High-level modules should not depend on low-level modules, both should depend on abstractions.
+
+// DIP: Vehicle depends on Engine abstraction
+public interface Engine {
+    void start();
+    void stop();
+}
+
+public class CarEngine implements Engine {
+    @Override
+    public void start() {
+        System.out.println("Car engine started.");
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Car engine stopped.");
+    }
+}
+
+public class Vehicle {
+    private Engine engine;
+
+    public Vehicle(Engine engine) {
+        this.engine = engine;
+    }
+
+    public void start() {
+        engine.start();
+    }
+
+    public void stop() {
+        engine.stop();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Engine engine = new CarEngine();
+        Vehicle vehicle = new Vehicle(engine);
+        vehicle.start();
+        vehicle.stop();
+    }
+}
+Here, Vehicle depends on the Engine interface, not on a concrete implementation. This allows easy swapping of engine types without modifying the Vehicle class.
