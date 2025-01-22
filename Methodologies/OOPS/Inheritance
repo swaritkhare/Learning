@@ -1,0 +1,211 @@
+Inheritance in Java
+Inheritance is one of the four fundamental principles of Object-Oriented Programming (OOP). It allows a class to inherit properties and behaviors (methods) from another class, facilitating code reusability and method overriding. The class that inherits properties is called the subclass (or child class), and the class being inherited from is called the superclass (or parent class).
+
+Types of Inheritance in Java:
+Single Inheritance: A class inherits from one superclass.
+Multilevel Inheritance: A class inherits from a subclass, making it a chain of inheritance.
+Hierarchical Inheritance: Multiple subclasses inherit from one superclass.
+Multiple Inheritance (not directly supported in Java via classes, but can be achieved using interfaces): A class implements multiple interfaces.
+Java supports single inheritance and multilevel inheritance directly. For multiple inheritance, Java uses interfaces instead of class inheritance.
+
+Key Concepts:
+super Keyword: Used to refer to the immediate parent class. It helps in accessing superclass methods and constructors.
+Method Overriding: When a subclass provides a specific implementation of a method that is already provided by its superclass.
+Constructor Inheritance: Constructors are not inherited, but a subclass can call a superclass constructor using super().
+Object Class: The root class of all classes in Java. Every class inherits from Object class, either directly or indirectly.
+
+Example of Inheritance:
+1. Single Inheritance
+
+class Animal {
+    void eat() {
+        System.out.println("Eating...");
+    }
+}
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("Barking...");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.eat(); // Inherited method from Animal class
+        dog.bark(); // Dog-specific method
+    }
+}
+
+Output:
+Eating...
+Barking...
+
+2. Multilevel Inheritance
+
+class Animal {
+    void eat() {
+        System.out.println("Eating...");
+    }
+}
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("Barking...");
+    }
+}
+
+class Puppy extends Dog {
+    void play() {
+        System.out.println("Playing...");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Puppy puppy = new Puppy();
+        puppy.eat();  // Inherited from Animal
+        puppy.bark(); // Inherited from Dog
+        puppy.play(); // Specific to Puppy
+    }
+}
+
+Output:
+Eating...
+Barking...
+Playing...
+
+3. Method Overriding
+
+class Animal {
+    void sound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal animal = new Dog();
+        animal.sound();  // Output will be "Dog barks" due to method overriding
+    }
+}
+
+Output:
+Dog barks
+
+4. Using super Keyword
+
+class Animal {
+    Animal() {
+        System.out.println("Animal class constructor");
+    }
+
+    void eat() {
+        System.out.println("Eating...");
+    }
+}
+
+class Dog extends Animal {
+    Dog() {
+        super();  // Calling parent class constructor
+        System.out.println("Dog class constructor");
+    }
+
+    void bark() {
+        System.out.println("Barking...");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.eat();  // Inherited from Animal class
+        dog.bark(); // Dog-specific method
+    }
+}
+
+Output:
+Animal class constructor
+Dog class constructor
+Eating...
+Barking...
+
+Interview Questions and Answers on Inheritance in Java:
+1. What is Inheritance in Java?
+Answer: Inheritance is a mechanism where a new class (subclass or child class) inherits properties and behaviors (methods) from an existing class (superclass or parent class). It allows code reuse and creates a hierarchical relationship between classes.
+
+2. What are the advantages of using Inheritance in Java?
+Answer:
+Code Reusability: A subclass inherits methods and fields from the superclass, reducing code duplication.
+Extensibility: You can extend a class and add new features without modifying the existing code.
+Method Overriding: Enables the subclass to provide a specific implementation of a method already defined in the superclass.
+
+3. Can constructors be inherited in Java?
+Answer: No, constructors are not inherited in Java. However, a subclass can call the constructor of its superclass using the super() keyword.
+
+4. What is the super keyword in Java?
+Answer: The super keyword is used in Java to refer to the immediate parent class. It is commonly used to:
+Call the constructor of the parent class.
+Access methods and fields of the parent class if they are overridden in the child class.
+
+5. Can a class inherit multiple classes in Java?
+Answer: No, Java does not support multiple inheritance with classes (a class cannot inherit from more than one class). However, a class can implement multiple interfaces to achieve multiple inheritance.
+
+6. What is method overriding and how does it relate to inheritance?
+Answer: Method overriding occurs when a subclass provides its own implementation of a method that is already defined in its superclass. It allows the subclass to modify or extend the behavior of the inherited method. Method overriding supports dynamic polymorphism.
+
+7. Can we override a private method in Java?
+Answer: No, private methods cannot be overridden in Java because they are not accessible in the subclass. They are confined to the class in which they are defined.
+
+8. What is the difference between method overloading and method overriding in Java?
+Answer:
+Method Overloading: Method overloading occurs when two or more methods in the same class have the same name but differ in parameters (number, type, or both).
+Method Overriding: Method overriding occurs when a subclass provides its own implementation for a method that is already defined in its superclass with the same signature (name and parameters).
+
+9. Explain the concept of multilevel inheritance with an example.
+Answer: Multilevel inheritance is a type of inheritance where a class inherits from a subclass, which in turn inherits from another class. It creates a chain of inheritance.
+Example:
+
+class Animal {
+    void eat() { System.out.println("Eating..."); }
+}
+
+class Dog extends Animal {
+    void bark() { System.out.println("Barking..."); }
+}
+
+class Puppy extends Dog {
+    void play() { System.out.println("Playing..."); }
+}
+
+10. Can a child class access private members of a parent class?
+Answer: No, a child class cannot directly access private members (fields or methods) of a parent class. However, a child class can access protected or public members of the parent class.
+
+11. What is the relationship between inheritance and polymorphism in Java?
+Answer: Inheritance and polymorphism work together in Java. Inheritance allows one class to inherit properties and methods from another class. Polymorphism allows methods to have different behaviors in different subclasses, even though they share the same method name. This is commonly achieved through method overriding.
+
+12. What is the root class of all classes in Java?
+Answer: The root class of all classes in Java is the Object class. Every class in Java is a direct or indirect subclass of Object.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ChatGPT can make mistakes. Check important info.
