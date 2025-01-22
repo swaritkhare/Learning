@@ -1,0 +1,166 @@
+Liskov Substitution Principle (LSP)
+The Liskov Substitution Principle (LSP) is one of the five SOLID principles and it states that:
+
+"Objects of a superclass should be replaceable with objects of a subclass without affecting the correctness of the program."
+
+In simpler terms, if a class B is a subclass of class A, then objects of class A should be able to be replaced by objects of class B without altering the desired behavior of the program.
+
+Why is LSP Important?
+Ensures Correctness: When subclass objects can be substituted for superclass objects without introducing errors, it guarantees the correctness of the system.
+Polymorphism: LSP is vital for polymorphism to work properly. If subclasses don't conform to the behavior expected by the superclass, polymorphic behavior (substituting one class for another) may break.
+Maintains Client Expectations: Subclasses should respect the expectations that the clients of the superclass have, so when they are replaced by subclass objects, it doesn't lead to unexpected behavior.
+LSP Violation Example
+Let's consider a simple example of Bird and Penguin classes.
+
+java
+Copy
+Edit
+// Superclass
+public class Bird {
+    public void fly() {
+        System.out.println("Flying...");
+    }
+}
+
+// Subclass
+public class Penguin extends Bird {
+    @Override
+    public void fly() {
+        throw new UnsupportedOperationException("Penguins can't fly!");
+    }
+}
+In the above code:
+
+We have a superclass Bird that defines a fly() method.
+The subclass Penguin overrides the fly() method but throws an exception, since penguins can't fly.
+Violation of LSP:
+In this case, the Penguin class violates the Liskov Substitution Principle because:
+
+If a client code is using the Bird class and expects all Bird objects to be able to fly, substituting a Penguin object will break this assumption.
+The Penguin class should not inherit from the Bird class if it cannot fulfill the contract (flying).
+Fixing LSP Violation
+To fix the violation, we can refactor the design such that only birds that can actually fly inherit from Bird, and other birds, like Penguin, are separated into their own class hierarchy.
+
+Correct Approach (Adhering to LSP):
+java
+Copy
+Edit
+// Superclass for birds that can fly
+public class FlyingBird {
+    public void fly() {
+        System.out.println("Flying...");
+    }
+}
+
+// Superclass for all birds
+public class Bird {
+    // Some general behavior common to all birds
+    public void eat() {
+        System.out.println("Eating...");
+    }
+}
+
+// Subclass for birds that can fly
+public class Sparrow extends FlyingBird {
+    // Sparrow can fly, so it inherits from FlyingBird
+}
+
+// Subclass for birds that cannot fly
+public class Penguin extends Bird {
+    // Penguin cannot fly, so it does not inherit FlyingBird
+}
+In this case:
+
+FlyingBird is a class that is specifically for birds that can fly.
+Bird is a more general class that all birds inherit from, but birds that can't fly, like Penguin, don't need to inherit the fly() method.
+Sparrow inherits from FlyingBird, which is allowed to fly.
+Penguin does not inherit the fly() method and thus avoids the violation of LSP.
+Now, Penguin no longer violates LSP because clients of the Bird class can safely assume that all Bird objects (in this case, excluding those that should not have a flying behavior) will behave as expected.
+
+Code Example of LSP in Action:
+Let’s look at an example where we substitute different types of birds (flying and non-flying) in a polymorphic context without breaking the system.
+
+java
+Copy
+Edit
+// Superclass for all birds
+public class Bird {
+    public void eat() {
+        System.out.println("Bird is eating");
+    }
+}
+
+// Class for birds that can fly
+public class FlyingBird extends Bird {
+    public void fly() {
+        System.out.println("Flying...");
+    }
+}
+
+// Specific flying bird
+public class Sparrow extends FlyingBird {
+    public void chirp() {
+        System.out.println("Sparrow chirps!");
+    }
+}
+
+// Non-flying bird
+public class Penguin extends Bird {
+    public void swim() {
+        System.out.println("Penguin swims!");
+    }
+}
+
+// A method that accepts a Bird object and demonstrates LSP
+public class BirdShow {
+    public void showBird(Bird bird) {
+        bird.eat(); // All birds can eat
+        // Further behavior can be added based on the type of bird
+        if (bird instanceof FlyingBird) {
+            ((FlyingBird) bird).fly(); // Only flying birds can fly
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        BirdShow birdShow = new BirdShow();
+
+        // Sparrow can fly
+        Sparrow sparrow = new Sparrow();
+        birdShow.showBird(sparrow);
+
+        // Penguin cannot fly, but can swim
+        Penguin penguin = new Penguin();
+        birdShow.showBird(penguin);
+    }
+}
+Explanation:
+Bird class provides common behavior (e.g., eat() method).
+FlyingBird extends Bird and adds the fly() method, which is only relevant to birds that can fly.
+Sparrow extends FlyingBird, so it inherits fly() and chirp().
+Penguin extends Bird, but it does not inherit fly(). Instead, it has its own behavior like swim().
+The BirdShow class demonstrates the polymorphic behavior where the method showBird() can accept any subclass of Bird, and handle it accordingly based on whether it can fly or not.
+When you run the program:
+
+text
+Copy
+Edit
+Bird is eating
+Flying...
+Bird is eating
+In this approach, the Liskov Substitution Principle is satisfied because:
+
+Sparrow (a subclass of FlyingBird) can be substituted for FlyingBird without breaking the program.
+Penguin (a subclass of Bird) can be substituted for Bird, and it doesn't break the expected behavior either because the showBird() method correctly handles it.
+Summary of LSP:
+Liskov Substitution Principle (LSP) ensures that objects of a subclass can replace objects of the superclass without altering the desired behavior of the program.
+If a subclass cannot fulfill the contract of the superclass (e.g., Penguin cannot fly but inherits from Bird), it violates LSP.
+The solution is to separate concerns using appropriate inheritance and polymorphism to ensure that subclasses adhere to the same behavior as the superclass.
+When LSP is adhered to, it leads to a more flexible and maintainable codebase where polymorphism works as intended.
+
+
+
+
+
+
