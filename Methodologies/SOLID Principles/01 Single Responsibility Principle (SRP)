@@ -10,62 +10,56 @@ Maintainability: When a class is responsible for only one thing, it’s easier t
 Testability: A class with a single responsibility can be tested more easily since it only deals with one concern.
 Flexibility: SRP makes it easier to extend or modify the system. If a change is required in a particular functionality, it won’t affect other unrelated parts of the class.
 Decoupling: By adhering to SRP, classes are more independent of each other, which helps in reducing the complexity of the system.
+
 Example of SRP
-Let's illustrate SRP with an example:
-
-Without SRP:
-java
-Copy
-Edit
-// A class that violates SRP by handling both order processing and printing invoices
-public class OrderProcessor {
-    public void processOrder(Order order) {
-        // Process the order
-        System.out.println("Processing order for: " + order.getCustomerName());
+    Without SRP:
+        // A class that violates SRP by handling both order processing and printing invoices
+        public class OrderProcessor {
+            public void processOrder(Order order) {
+                // Process the order
+                System.out.println("Processing order for: " + order.getCustomerName());
+                
+                // Handle invoice printing (this is a separate responsibility)
+                System.out.println("Printing invoice for order: " + order.getOrderId());
+            }
+        }
+        In the above example, the OrderProcessor class is responsible for two distinct tasks:
+        Processing the order
+        Printing the invoice
         
-        // Handle invoice printing (this is a separate responsibility)
-        System.out.println("Printing invoice for order: " + order.getOrderId());
-    }
-}
-In the above example, the OrderProcessor class is responsible for two distinct tasks:
-
-Processing the order
-Printing the invoice
-This violates the SRP because the class has multiple reasons to change:
-
-If the order processing logic changes, we modify this class.
-If the invoice printing logic changes, we modify this class as well.
-This leads to tight coupling and makes it difficult to maintain.
-
-With SRP:
-To adhere to SRP, we can break the class into smaller, more focused classes, each having one responsibility.
-
-java
-Copy
-Edit
-// Class responsible for processing the order
-public class OrderProcessor {
-    private InvoicePrinter invoicePrinter;
-
-    public OrderProcessor(InvoicePrinter invoicePrinter) {
-        this.invoicePrinter = invoicePrinter;
-    }
-
-    public void processOrder(Order order) {
-        // Process the order
-        System.out.println("Processing order for: " + order.getCustomerName());
+        This violates the SRP because the class has multiple reasons to change:
         
-        // Delegate the responsibility of printing the invoice to another class
-        invoicePrinter.printInvoice(order);
-    }
-}
+        If the order processing logic changes, we modify this class.
+        If the invoice printing logic changes, we modify this class as well.
+        This leads to tight coupling and makes it difficult to maintain.
+    
+    With SRP:
+        To adhere to SRP, we can break the class into smaller, more focused classes, each having one responsibility.
+        
+        // Class responsible for processing the order
+        public class OrderProcessor {
+            private InvoicePrinter invoicePrinter;
+        
+            public OrderProcessor(InvoicePrinter invoicePrinter) {
+                this.invoicePrinter = invoicePrinter;
+            }
+        
+            public void processOrder(Order order) {
+                // Process the order
+                System.out.println("Processing order for: " + order.getCustomerName());
+                
+                // Delegate the responsibility of printing the invoice to another class
+                invoicePrinter.printInvoice(order);
+            }
+        }
+        
+        // Class responsible only for printing the invoice
+        public class InvoicePrinter {
+            public void printInvoice(Order order) {
+                System.out.println("Printing invoice for order: " + order.getOrderId());
+            }
+        }
 
-// Class responsible only for printing the invoice
-public class InvoicePrinter {
-    public void printInvoice(Order order) {
-        System.out.println("Printing invoice for order: " + order.getOrderId());
-    }
-}
 Explanation:
 OrderProcessor now only handles the responsibility of processing the order, and it delegates the invoice printing task to another class (InvoicePrinter).
 InvoicePrinter is focused solely on the responsibility of printing invoices.
@@ -78,72 +72,69 @@ Easier Maintenance: Changes to one responsibility don’t affect the other, so t
 Improved Readability: Each class focuses on a single responsibility, making the code easier to understand and navigate.
 Better Testability: Smaller classes are easier to test because their responsibilities are clearly defined.
 Reusability: Smaller, more focused classes can be reused in other parts of the system without unnecessary dependencies.
+
 SRP in Action (Real-World Example):
 Consider a UserService class that is responsible for handling user-related functionalities like creating a user, updating the user profile, and sending notifications (which is a completely separate responsibility).
 
-java
-Copy
-Edit
-public class UserService {
-    private NotificationService notificationService;
-
-    public UserService(NotificationService notificationService) {
-        this.notificationService = notificationService;
+    public class UserService {
+        private NotificationService notificationService;
+    
+        public UserService(NotificationService notificationService) {
+            this.notificationService = notificationService;
+        }
+    
+        public void createUser(User user) {
+            // Logic for creating a user
+            System.out.println("User created: " + user.getName());
+    
+            // Send a notification after creating the user (violating SRP)
+            notificationService.sendNotification(user);
+        }
+    
+        public void updateUserProfile(User user) {
+            // Logic for updating the user's profile
+            System.out.println("User profile updated for: " + user.getName());
+    
+            // Send a notification about profile update (violating SRP)
+            notificationService.sendNotification(user);
+        }
     }
-
-    public void createUser(User user) {
-        // Logic for creating a user
-        System.out.println("User created: " + user.getName());
-
-        // Send a notification after creating the user (violating SRP)
-        notificationService.sendNotification(user);
-    }
-
-    public void updateUserProfile(User user) {
-        // Logic for updating the user's profile
-        System.out.println("User profile updated for: " + user.getName());
-
-        // Send a notification about profile update (violating SRP)
-        notificationService.sendNotification(user);
-    }
-}
 In the above example, the UserService is responsible for creating/updating users and sending notifications. This violates SRP because these are two distinct responsibilities.
 
 To apply SRP, we refactor the code as follows:
 
-java
-Copy
-Edit
-// UserService class focuses only on user-related functionality
-public class UserService {
-    private UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    // UserService class focuses only on user-related functionality
+    public class UserService {
+        private UserRepository userRepository;
+    
+        public UserService(UserRepository userRepository) {
+            this.userRepository = userRepository;
+        }
+    
+        public void createUser(User user) {
+            // Logic for creating a user
+            userRepository.save(user);
+            System.out.println("User created: " + user.getName());
+        }
+    
+        public void updateUserProfile(User user) {
+            // Logic for updating the user's profile
+            userRepository.update(user);
+            System.out.println("User profile updated for: " + user.getName());
+        }
+    }
+    
+    // NotificationService class is now responsible only for sending notifications
+    public class NotificationService {
+        public void sendNotification(User user) {
+            System.out.println("Sending notification to: " + user.getName());
+        }
     }
 
-    public void createUser(User user) {
-        // Logic for creating a user
-        userRepository.save(user);
-        System.out.println("User created: " + user.getName());
-    }
-
-    public void updateUserProfile(User user) {
-        // Logic for updating the user's profile
-        userRepository.update(user);
-        System.out.println("User profile updated for: " + user.getName());
-    }
-}
-
-// NotificationService class is now responsible only for sending notifications
-public class NotificationService {
-    public void sendNotification(User user) {
-        System.out.println("Sending notification to: " + user.getName());
-    }
-}
 Explanation:
 UserService now handles only the responsibilities related to user creation and updating.
 NotificationService is responsible only for sending notifications.
 This adheres to SRP by separating concerns, making the code cleaner, more maintainable, and easier to test.
+
 Conclusion:
 The Single Responsibility Principle (SRP) helps improve the design of your software by ensuring that each class has only one reason to change. This leads to better maintainability, easier testing, and greater flexibility in your applications. By splitting complex, multi-functional classes into smaller, more focused ones, your code becomes more modular, reusable, and easier to understand.
