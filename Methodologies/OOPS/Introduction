@@ -1,1 +1,162 @@
+Object-Oriented Programming (OOP) in Java is a programming paradigm that organizes software design around objects, rather than functions or logic. Each object is an instance of a class, and classes define the behavior (methods) and state (attributes or fields) of objects. The core principles of OOP in Java are Encapsulation, Inheritance, Polymorphism, and Abstraction.
 
+1. Encapsulation:
+  Definition: Encapsulation refers to the bundling of data (attributes) and methods that operate on that data into a single unit called a class. It also restricts direct access to some of an object's components, which is why the object’s data is hidden from other objects.
+  How it works: By making attributes private and providing public getter and setter methods, you control how the data is accessed and modified.
+  Example:
+  
+  class Person {
+      private String name; // private data
+  
+      public String getName() { // getter method
+          return name;
+      }
+  
+      public void setName(String name) { // setter method
+          this.name = name;
+      }
+  }
+  
+  public class Main {
+      public static void main(String[] args) {
+          Person person = new Person();
+          person.setName("John");
+          System.out.println(person.getName()); // Output: John
+      }
+  }
+
+2. Inheritance:
+  Definition: Inheritance allows one class to inherit the properties and methods of another class. It helps in reusing code and establishing a relationship between classes.
+  How it works: A subclass can inherit from a superclass and can also add or override methods of the superclass.
+  Example:
+  
+  class Animal {
+      void eat() {
+          System.out.println("Eating...");
+      }
+  }
+  
+  class Dog extends Animal {
+      void bark() {
+          System.out.println("Barking...");
+      }
+  }
+  
+  public class Main {
+      public static void main(String[] args) {
+          Dog dog = new Dog();
+          dog.eat(); // Inherited method
+          dog.bark(); // Dog-specific method
+      }
+  }
+
+3. Polymorphism:
+  Definition: Polymorphism means "many forms," and it allows objects of different classes to be treated as objects of a common superclass. The most common use is when a subclass provides a specific implementation of a method that is already defined in its superclass.
+  Types of Polymorphism:
+  Compile-time (Method Overloading): Same method name with different parameters.
+  Runtime (Method Overriding): A method in the subclass overrides a method in the superclass.
+  Example (Method Overloading):
+
+  class Printer {
+      void print(int number) {
+          System.out.println("Printing number: " + number);
+      }
+  
+      void print(String message) {
+          System.out.println("Printing message: " + message);
+      }
+  }
+  
+  public class Main {
+      public static void main(String[] args) {
+          Printer printer = new Printer();
+          printer.print(123); // Calls print(int)
+          printer.print("Hello World"); // Calls print(String)
+      }
+  }
+
+  Example (Method Overriding):
+
+  class Animal {
+      void sound() {
+          System.out.println("Animal makes a sound");
+      }
+  }
+  
+  class Dog extends Animal {
+      @Override
+      void sound() {
+          System.out.println("Dog barks");
+      }
+  }
+  
+  public class Main {
+      public static void main(String[] args) {
+          Animal animal = new Dog();
+          animal.sound(); // Output: Dog barks
+      }
+  }
+
+4. Abstraction:
+  Definition: Abstraction is the concept of hiding the implementation details and showing only the essential features of an object. In Java, abstraction is achieved through abstract classes and interfaces.
+  
+  How it works: An abstract class can have abstract methods (methods without implementation) and concrete methods (with implementation), while an interface only has abstract methods and constants.
+  
+  Example (Abstract Class):
+  
+  abstract class Animal {
+      abstract void sound(); // Abstract method
+  
+      void sleep() {
+          System.out.println("Sleeping...");
+      }
+  }
+  
+  class Dog extends Animal {
+      @Override
+      void sound() {
+          System.out.println("Barking...");
+      }
+  }
+  
+  public class Main {
+      public static void main(String[] args) {
+          Dog dog = new Dog();
+          dog.sound(); // Output: Barking...
+          dog.sleep(); // Output: Sleeping...
+      }
+  }
+  
+  Example (Interface):
+  
+  interface Animal {
+      void sound(); // Abstract method
+  }
+  
+  class Dog implements Animal {
+      @Override
+      public void sound() {
+          System.out.println("Barking...");
+      }
+  }
+  
+  public class Main {
+      public static void main(String[] args) {
+          Animal animal = new Dog();
+          animal.sound(); // Output: Barking...
+      }
+  }
+
+Key Points to Remember:
+  Classes and Objects: In Java, OOP revolves around creating classes that define the structure and behavior of objects.
+  Constructor: A constructor is a special method used to initialize objects when they are created.
+  Method Overloading & Overriding: OOP in Java supports method overloading (same method name with different parameters) and overriding (same method signature in both parent and child classes).
+  Access Modifiers: Java provides public, private, protected, and default access modifiers to control access to classes, methods, and fields.
+  By using these OOP principles, Java enables the creation of modular, reusable, and maintainable code.
+  
+
+
+
+
+
+ChatGPT can make mistakes. Check important info.
