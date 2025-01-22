@@ -1,0 +1,162 @@
+2. Shapes Example (SOLID Principles)
+
+2.1 Single Responsibility Principle (SRP)
+Each class has one responsibility.
+
+// SRP: Shape is responsible for shape behavior
+public abstract class Shape {
+    public abstract double area();
+}
+
+// SRP: Circle is responsible for its own behavior
+public class Circle extends Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+// SRP: Rectangle is responsible for its own behavior
+public class Rectangle extends Shape {
+    private double length;
+    private double width;
+
+    public Rectangle(double length, double width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    @Override
+    public double area() {
+        return length * width;
+    }
+}
+Each class is focused on a single responsibility, either computing the area or holding shape-specific data.
+
+2.2 Open/Closed Principle (OCP)
+Classes should be open for extension, but closed for modification.
+
+// OCP: Shape is an abstract class
+public abstract class Shape {
+    public abstract double area();
+}
+
+// OCP: Adding new shapes like Triangle doesn't require modifying Shape class
+public class Triangle extends Shape {
+    private double base;
+    private double height;
+
+    public Triangle(double base, double height) {
+        this.base = base;
+        this.height = height;
+    }
+
+    @Override
+    public double area() {
+        return 0.5 * base * height;
+    }
+}
+You can add new shapes (like Triangle) without modifying the Shape class.
+
+2.3 Liskov Substitution Principle (LSP)
+Objects of a superclass should be replaceable with objects of a subclass without affecting the behavior.
+
+// LSP: Replace shapes with their subclasses
+public class ShapeTest {
+    public static void testArea(Shape shape) {
+        System.out.println("Area: " + shape.area());
+    }
+
+    public static void main(String[] args) {
+        Shape circle = new Circle(5);
+        Shape rectangle = new Rectangle(4, 6);
+        Shape triangle = new Triangle(4, 5);
+
+        testArea(circle); // Area: 78.53981633974483
+        testArea(rectangle); // Area: 24.0
+        testArea(triangle); // Area: 10.0
+    }
+}
+You can substitute a Shape object with any subclass (like Circle, Rectangle, Triangle) without changing the testArea method's behavior.
+
+2.4 Interface Segregation Principle (ISP)
+Clients should not be forced to depend on interfaces they do not use.
+
+// ISP: Separate interfaces for shape behaviors
+public interface Drawable {
+    void draw();
+}
+
+public interface Resizeable {
+    void resize();
+}
+
+// Only implement relevant interfaces
+public class Circle implements Drawable, Resizeable {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a circle.");
+    }
+
+    @Override
+    public void resize() {
+        System.out.println("Resizing a circle.");
+    }
+}
+
+public class Rectangle implements Drawable {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a rectangle.");
+    }
+}
+Here, Circle implements both Drawable and Resizeable, while Rectangle only implements Drawable, following the ISP.
+
+2.5 Dependency Inversion Principle (DIP)
+High-level modules should not depend on low-level modules, both should depend on abstractions.
+
+// DIP: Shape depends on the abstraction
+public interface Shape {
+    double area();
+}
+
+public class Circle implements Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+public class AreaCalculator {
+    private Shape shape;
+
+    public AreaCalculator(Shape shape) {
+        this.shape = shape;
+    }
+
+    public void calculateArea() {
+        System.out.println("Area: " + shape.area());
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Shape circle = new Circle(5);
+        AreaCalculator calculator = new AreaCalculator(circle);
+        calculator.calculateArea();
+    }
+}
+The AreaCalculator depends on the Shape abstraction, not on any concrete shape. This allows you to easily switch between different shapes without changing the AreaCalculator.
+
