@@ -1,0 +1,149 @@
+Abstraction in Java
+Abstraction is one of the fundamental principles of Object-Oriented Programming (OOP). It allows you to hide the implementation details and show only the essential features of an object. In Java, abstraction can be achieved using abstract classes and interfaces. The key purpose of abstraction is to reduce complexity by hiding unnecessary details and providing a simplified interface.
+
+Key Concepts of Abstraction:
+
+Abstract Class:
+An abstract class is a class that cannot be instantiated directly.
+It can contain abstract methods (methods without implementation) and concrete methods (methods with implementation).
+Subclasses are required to provide implementations for the abstract methods.
+
+Interface:
+An interface is a contract that defines a set of abstract methods (without implementation) that a class must implement.
+A class can implement multiple interfaces, which allows for multiple inheritance in Java.
+Interfaces cannot have any concrete methods (unless default methods or static methods in Java 8 and later).
+
+Why Use Abstraction?
+Code Reusability: It helps in defining general templates that can be reused by different classes.
+Maintainability: By decoupling the interface and implementation, it makes the system more maintainable and flexible.
+Security: Abstraction hides implementation details, preventing the user from directly interacting with the internal workings of a class.
+
+Example of Abstraction Using Abstract Class:
+
+// Abstract class
+abstract class Animal {
+    // Abstract method (does not have a body)
+    abstract void sound();
+
+    // Regular method
+    void eat() {
+        System.out.println("Eating...");
+    }
+}
+
+// Dog class extends Animal
+class Dog extends Animal {
+    // Providing implementation for the abstract method
+    @Override
+    void sound() {
+        System.out.println("Barking...");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Animal animal = new Animal(); // Error: Cannot instantiate abstract class
+        Animal dog = new Dog();  // Creating an instance of Dog (subclass)
+        dog.sound();  // Output: Barking...
+        dog.eat();    // Output: Eating...
+    }
+}
+
+Explanation:
+The Animal class is abstract, so it cannot be instantiated directly.
+The sound() method is abstract and must be implemented by any subclass of Animal.
+The Dog class provides its own implementation for the sound() method.
+The eat() method is a concrete method that can be inherited as-is.
+
+Example of Abstraction Using Interface:
+
+// Interface
+interface Animal {
+    // Abstract method (does not have a body)
+    void sound();
+
+    // Default method (added in Java 8)
+    default void sleep() {
+        System.out.println("Sleeping...");
+    }
+}
+
+// Dog class implements Animal interface
+class Dog implements Animal {
+    // Providing implementation for the abstract method
+    @Override
+    public void sound() {
+        System.out.println("Barking...");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal dog = new Dog();
+        dog.sound();  // Output: Barking...
+        dog.sleep();  // Output: Sleeping...
+    }
+}
+
+Explanation:
+The Animal interface defines an abstract method sound() and a default method sleep().
+The Dog class implements the Animal interface and provides its own implementation of the sound() method.
+The sleep() method is inherited directly from the interface since it is a default method.
+
+Key Differences Between Abstract Classes and Interfaces:
+Feature	          Abstract Class	                                                       Interface
+Methods	          Can have both abstract and concrete methods	                           Can only have abstract methods (before Java 8, now default methods can be added)
+Constructors	    Can have constructors	                                                 Cannot have constructors
+Inheritance	      A class can inherit from only one abstract class (single inheritance)	 A class can implement multiple interfaces (multiple inheritance)
+Fields	          Can have instance fields and static fields	                           Can have only static final fields (constants)
+Access Modifiers	Methods can have different access modifiers (public, protected, etc.)	 All methods in an interface are implicitly public
+Use Case	        Suitable when classes have a common base and behavior	                 Suitable for defining a contract that multiple classes can implement
+
+Interview Questions and Answers on Abstraction in Java:
+1. What is abstraction in Java?
+Answer: Abstraction is a fundamental concept of OOP that hides the implementation details and shows only the essential features of an object. In Java, abstraction is achieved using abstract classes and interfaces. The goal is to define what actions an object can perform, not how it performs them.
+
+2. What is the difference between an abstract class and an interface?
+Answer:
+Abstract Class: Can have both abstract and concrete methods, instance variables, and constructors. A class can inherit only one abstract class due to Java's single inheritance.
+Interface: Can only have abstract methods (except for default methods in Java 8 and beyond). A class can implement multiple interfaces, supporting multiple inheritance.
+
+3. What is an abstract class in Java?
+Answer: An abstract class is a class that cannot be instantiated directly. It may contain abstract methods (methods without implementation) as well as concrete methods (methods with implementation). Any subclass of an abstract class must provide implementations for the abstract methods.
+
+4. Can an abstract class have a constructor?
+Answer: Yes, an abstract class can have a constructor. While an abstract class cannot be instantiated directly, its constructor can be invoked by subclasses through the super() keyword.
+
+5. Can an interface have constructors in Java?
+Answer: No, interfaces cannot have constructors. They can only have abstract methods (unless using default methods or static methods in Java 8 and beyond), which must be implemented by the classes that implement the interface.
+
+6. What is the purpose of the default keyword in interfaces?
+Answer: The default keyword in interfaces (introduced in Java 8) allows you to define a concrete method in an interface. A default method can be inherited by the implementing classes, providing a default implementation if the class does not override it.
+
+7. Can an abstract class implement an interface?
+Answer: Yes, an abstract class can implement an interface. The abstract class must provide implementations for the methods declared in the interface or leave them as abstract for its subclasses to implement.
+
+8. What are the advantages of abstraction?
+Answer:
+Simplified Interface: Only essential details are exposed, making it easier for the user to understand and interact with the object.
+Code Maintainability: Changes in the implementation do not affect the users of the abstracted object, as long as the interface remains unchanged.
+Flexibility: It allows the creation of more flexible and modular systems by defining general templates that can be implemented by different classes.
+
+9. Can a class extend an abstract class and implement an interface simultaneously?
+Answer: Yes, a class can extend an abstract class and implement one or more interfaces. This allows a class to inherit the behaviors from the abstract class while also committing to the contract defined by the interface.
+
+10. Why would you use abstraction in Java?
+Answer: Abstraction is used to hide the implementation details of an object and expose only the necessary features. It helps in reducing complexity, improving maintainability, and promoting code reusability by defining common behavior without exposing the internal workings.
+
+11. Is it possible to instantiate an abstract class directly?
+Answer: No, an abstract class cannot be instantiated directly. It can only be instantiated through its subclass, which provides implementations for any abstract methods defined in the abstract class.
+
+Conclusion:
+Abstraction in Java is a powerful feature that allows you to focus on what an object does, rather than how it does it. It simplifies complex systems by hiding implementation details and creating a clear and simple interface. By using abstract classes and interfaces, Java promotes code reusability, maintainability, and flexibility, which are key principles of object-oriented design.
+
+
+
+
+
+
+
