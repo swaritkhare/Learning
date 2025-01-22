@@ -1,0 +1,143 @@
+Polymorphism in Java:
+Polymorphism is one of the four core concepts of Object-Oriented Programming (OOP). It is derived from the Greek words poly (many) and morph (forms), meaning the ability to take many forms. In Java, polymorphism allows objects of different classes to be treated as objects of a common super class. It is primarily of two types:
+
+Compile-time Polymorphism (Static Polymorphism): Achieved by method overloading or operator overloading.
+Runtime Polymorphism (Dynamic Polymorphism): Achieved by method overriding.
+
+Types of Polymorphism:
+1. Compile-time Polymorphism (Method Overloading)
+Method Overloading occurs when multiple methods have the same name but differ in the number of parameters, types of parameters, or both.
+The compiler determines which method to call at compile time based on the method signature.
+
+Example of Compile-time Polymorphism (Method Overloading):
+
+class Calculator {
+    // Method for adding two integers
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    // Overloaded method for adding three integers
+    public int add(int a, int b, int c) {
+        return a + b + c;
+    }
+
+    // Overloaded method for adding two doubles
+    public double add(double a, double b) {
+        return a + b;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Calculator calculator = new Calculator();
+
+        // Calling overloaded methods
+        System.out.println("Sum of 2 integers: " + calculator.add(5, 3));  // Output: 8
+        System.out.println("Sum of 3 integers: " + calculator.add(5, 3, 2));  // Output: 10
+        System.out.println("Sum of 2 doubles: " + calculator.add(5.5, 3.5));  // Output: 9.0
+    }
+}
+
+Explanation:
+The add() method is overloaded with different parameter types and numbers of parameters. The correct method is determined at compile time based on the number and types of arguments passed.
+
+2. Runtime Polymorphism (Method Overriding)
+Method Overriding happens when a subclass provides a specific implementation of a method that is already defined in its superclass.
+The method in the subclass has the same signature as the one in the superclass.
+Runtime polymorphism is resolved during program execution, and the method that gets called is determined based on the object type, not the reference type.
+
+Example of Runtime Polymorphism (Method Overriding):
+
+class Animal {
+    // Method in parent class
+    public void sound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    // Overriding method in child class
+    @Override
+    public void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+class Cat extends Animal {
+    // Overriding method in child class
+    @Override
+    public void sound() {
+        System.out.println("Cat meows");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Creating objects of the subclasses
+        Animal myDog = new Dog();
+        Animal myCat = new Cat();
+
+        // Calling overridden methods
+        myDog.sound();  // Output: Dog barks
+        myCat.sound();  // Output: Cat meows
+    }
+}
+
+Explanation:
+The sound() method is overridden in both the Dog and Cat classes.
+Even though the reference variable myDog and myCat are of type Animal, the actual method that gets called is based on the object type (Dog or Cat), which is determined at runtime.
+
+Why is Polymorphism Important?
+Flexibility and Reusability: Polymorphism allows methods to behave differently based on the object they are called on. This enhances code flexibility and reuse.
+Loose Coupling: It helps reduce dependencies between classes, making the code more modular and easier to maintain.
+Code Clarity: Polymorphism allows you to write cleaner code by providing a common interface for different object types.
+
+Interview Questions and Answers on Polymorphism:
+1. What is polymorphism in Java?
+Answer: Polymorphism in Java refers to the ability of a class to take on multiple forms. It allows objects of different classes to be treated as objects of a common superclass. Polymorphism is achieved in two ways:
+Compile-time Polymorphism (Method Overloading)
+Runtime Polymorphism (Method Overriding)
+
+2. What is the difference between method overloading and method overriding?
+Answer:
+Method Overloading: It occurs when multiple methods have the same name but differ in the number or types of parameters. The method to call is resolved at compile time.
+Method Overriding: It occurs when a subclass provides a specific implementation of a method that is already defined in its superclass. The method to call is resolved at runtime based on the object type.
+
+3. What is method overloading?
+Answer: Method overloading is a feature of Java where multiple methods in a class can have the same name but different parameters (either in number or type). The correct method is chosen based on the number or type of arguments passed at compile time.
+
+4. What is method overriding?
+Answer: Method overriding occurs when a subclass provides its specific implementation of a method that is already defined in its superclass. The method in the subclass must have the same name, return type, and parameters as in the superclass.
+
+5. What is the advantage of polymorphism?
+Answer: The main advantages of polymorphism are:
+Flexibility: It allows you to write more flexible and reusable code.
+Extensibility: You can add new classes that adhere to the same interface without changing existing code.
+Maintainability: It reduces the dependency between classes and makes the code easier to maintain.
+
+6. Can we override a private method in Java?
+Answer: No, you cannot override a private method in Java. Private methods are not inherited by subclasses, so they cannot be overridden. However, they can be hidden in the subclass if a method with the same name is defined.
+
+7. Can we override a static method in Java?
+Answer: No, static methods cannot be overridden in Java. Static methods are associated with the class itself, not instances of the class. However, you can hide a static method by defining a method with the same name in the subclass.
+
+8. What happens if we override a method with a different return type?
+Answer: If you override a method with a different return type that is not a subtype of the original return type, a compile-time error occurs. However, Java allows method overriding with covariant return types, where the return type can be a subclass of the original return type.
+
+9. Can we achieve polymorphism with constructors?
+Answer: No, constructors cannot be polymorphic in Java. Constructors are not inherited by subclasses, and they cannot be overridden. However, you can have overloaded constructors in a class (compile-time polymorphism) based on the number or type of arguments.
+
+10. How does polymorphism work with interfaces in Java?
+Answer: Polymorphism works with interfaces by allowing a class to implement multiple interfaces. A reference of an interface type can point to objects of any class that implements the interface. This allows different classes to implement the same set of methods while providing their specific behavior.
+
+11. What is the use of super and this in polymorphism?
+Answer:
+super: Refers to the superclass and can be used to call overridden methods in the parent class or the constructor of the parent class.
+this: Refers to the current instance of the class and can be used to call the current class's methods or constructors.
+
+12. What is the impact of polymorphism on method binding?
+Answer: In polymorphism, method binding is either early binding (for method overloading at compile time) or late binding (for method overriding at runtime). With method overriding (runtime polymorphism), the actual method that gets called is determined at runtime based on the object's class type, not the reference type.
+
+Conclusion:
+Polymorphism in Java is a powerful concept that enhances flexibility, reusability, and maintainability in object-oriented systems. By enabling objects to take multiple forms, it allows you to write more generic and extensible code. Understanding the difference between compile-time and runtime polymorphism, along with concepts like method overloading and overriding, is essential for mastering Java and OOP principles.
