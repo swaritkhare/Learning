@@ -1,0 +1,175 @@
+Encapsulation in Java:
+Encapsulation is one of the four fundamental principles of Object-Oriented Programming (OOP). It is the process of bundling the data (variables) and methods (functions) that operate on the data into a single unit known as a class. Moreover, encapsulation restricts direct access to some of an object's components and can prevent the accidental modification of data.
+
+The primary goal of encapsulation is to protect the integrity of the data by controlling access to it through getter and setter methods. This is also known as data hiding, as it hides the internal state of an object from the outside world.
+
+Key Concepts of Encapsulation:
+Private Variables: The class variables (data members) are declared private to prevent direct access by outside classes.
+Public Methods: Getter and setter methods (accessor and mutator methods) are provided to access and modify the values of private variables.
+Data Hiding: The implementation details of how the data is represented are hidden, and only necessary information is provided to the user.
+
+Why Use Encapsulation?
+Control Over Data: You can control how data is accessed or modified.
+Data Integrity: By allowing controlled access, you ensure that data remains valid and consistent.
+Flexibility: Changes to the internal representation of an object can be made without affecting external code.
+Security: You can hide sensitive data from direct access.
+
+Example of Encapsulation in Java:
+1. Simple Example of Encapsulation
+
+class Person {
+    // Private variables, cannot be accessed directly outside the class
+    private String name;
+    private int age;
+
+    // Getter method for name
+    public String getName() {
+        return name;
+    }
+
+    // Setter method for name
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Getter method for age
+    public int getAge() {
+        return age;
+    }
+
+    // Setter method for age
+    public void setAge(int age) {
+        // Validating the age before setting
+        if (age >= 0) {
+            this.age = age;
+        } else {
+            System.out.println("Age cannot be negative.");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Person person = new Person();
+
+        // Using setter methods to set values
+        person.setName("John");
+        person.setAge(25);
+
+        // Using getter methods to get values
+        System.out.println("Name: " + person.getName());  // Output: Name: John
+        System.out.println("Age: " + person.getAge());    // Output: Age: 25
+
+        // Trying to set an invalid age
+        person.setAge(-5);  // Output: Age cannot be negative.
+    }
+}
+
+Explanation:
+The Person class has private fields name and age, which cannot be accessed directly from outside the class.
+Getter and setter methods are provided to access and modify these private variables.
+The setter for age includes a validation check to ensure that age cannot be set to a negative value, demonstrating how encapsulation can enforce business rules and maintain data integrity.
+
+2. Encapsulation with Object Example
+
+class BankAccount {
+    private double balance;  // private field
+
+    // Constructor
+    public BankAccount(double balance) {
+        this.balance = balance;
+    }
+
+    // Getter method for balance
+    public double getBalance() {
+        return balance;
+    }
+
+    // Setter method for balance (Only allows positive deposits)
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        } else {
+            System.out.println("Deposit amount must be positive.");
+        }
+    }
+
+    // Method to withdraw money
+    public void withdraw(double amount) {
+        if (amount <= balance && amount > 0) {
+            balance -= amount;
+        } else {
+            System.out.println("Invalid withdrawal amount.");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount(1000);
+
+        // Accessing balance using getter
+        System.out.println("Initial balance: " + account.getBalance());  // Output: Initial balance: 1000.0
+
+        // Making valid deposit
+        account.deposit(500);
+        System.out.println("Balance after deposit: " + account.getBalance());  // Output: Balance after deposit: 1500.0
+
+        // Making invalid deposit
+        account.deposit(-200);  // Output: Deposit amount must be positive.
+
+        // Making valid withdrawal
+        account.withdraw(700);
+        System.out.println("Balance after withdrawal: " + account.getBalance());  // Output: Balance after withdrawal: 800.0
+
+        // Making invalid withdrawal
+        account.withdraw(1000);  // Output: Invalid withdrawal amount.
+    }
+}
+
+Explanation:
+The BankAccount class has a private field balance that cannot be accessed directly.
+Getter and setter methods (with validation) control how balance is modified, ensuring that deposits and withdrawals meet business rules.
+
+Interview Questions and Answers on Data Encapsulation:
+1. What is encapsulation in Java?
+Answer: Encapsulation is a principle of OOP that bundles the data (variables) and methods (functions) that operate on the data into a single unit called a class. It restricts direct access to some of an object's components and can prevent accidental modification of data by using private access modifiers and providing public getter and setter methods to access and modify the values of private variables.
+
+2. Why do we use encapsulation?
+Answer:
+Control Access: Encapsulation allows us to control how the data is accessed and modified, providing a layer of protection.
+Data Integrity: By restricting direct access to the fields, we can prevent incorrect values from being assigned.
+Flexibility: It makes it easier to modify the internal implementation of a class without affecting external code.
+Security: Sensitive data can be protected by hiding it from direct access.
+
+3. What are getter and setter methods?
+Answer: Getter and setter methods are used to access and update the private fields of a class. The getter method retrieves the value of a private field, and the setter method sets the value of a private field.
+
+4. Can we have private fields in Java?
+Answer: Yes, we can have private fields in Java. Private fields are accessible only within the class they are declared in. This promotes data hiding and ensures that the fields are not modified directly from outside the class.
+
+5. What is the benefit of using encapsulation instead of public fields?
+Answer: Using encapsulation (private fields and getter/setter methods) offers more control over how data is accessed and modified. It prevents the data from being changed directly and ensures that any changes are validated, which helps in maintaining data integrity. It also allows the internal implementation to be modified without affecting other parts of the code that use the class.
+
+6. What is the difference between encapsulation and abstraction?
+Answer:
+Encapsulation is about bundling the data and methods that operate on the data into a single unit and controlling access to the data through getter and setter methods.
+Abstraction is about hiding the implementation details and showing only the essential features of an object, allowing users to interact with it without needing to know how it works internally.
+In simple terms, abstraction hides complexity, while encapsulation hides the data.
+
+7. What is the access modifier used in encapsulation?
+Answer: The typical access modifiers used in encapsulation are:
+private: To restrict direct access to the fields.
+public: To provide access to getter and setter methods.
+
+8. What is the use of this keyword in setter methods?
+Answer: The this keyword is used to refer to the current object instance. It differentiates the instance variable from the local variable in the setter method when their names are the same.
+
+9. Can you change the value of a final variable using setter?
+Answer: No, you cannot change the value of a final variable after it has been assigned a value. The final keyword makes a variable constant, ensuring that its value cannot be modified once assigned.
+
+10. Can you have a constructor in an encapsulated class?
+Answer: Yes, an encapsulated class can have a constructor. A constructor can initialize the private fields of the class when an object is created. It allows you to set default values for the fields during object creation.
+
+Conclusion:
+Data encapsulation in Java is a key concept that improves the security, integrity, and maintainability of code. By encapsulating data and providing controlled access via getter and setter methods, Java allows developers to protect an object's internal state while still exposing the necessary functionality. This leads to more robust and reliable code, and it is an essential practice in object-oriented design.
