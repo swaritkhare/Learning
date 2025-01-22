@@ -1,0 +1,94 @@
+Code Example: OOP with Animals
+
+// Abstract class Animal to demonstrate Abstraction
+abstract class Animal {
+    // Encapsulation: Private field
+    private String name;
+
+    // Constructor
+    public Animal(String name) {
+        this.name = name;
+    }
+
+    // Getter for name
+    public String getName() {
+        return name;
+    }
+
+    // Abstract method that subclasses will implement
+    public abstract void makeSound();
+    
+    // Non-abstract method
+    public void sleep() {
+        System.out.println(name + " is sleeping.");
+    }
+}
+
+// Dog class inherits from Animal and demonstrates Inheritance and Polymorphism
+class Dog extends Animal {
+
+    // Constructor
+    public Dog(String name) {
+        super(name);  // Call parent class constructor
+    }
+
+    // Implementing the abstract method makeSound() in the Dog class
+    @Override
+    public void makeSound() {
+        System.out.println(getName() + " barks.");
+    }
+}
+
+// Cat class inherits from Animal and demonstrates Inheritance and Polymorphism
+class Cat extends Animal {
+
+    // Constructor
+    public Cat(String name) {
+        super(name);  // Call parent class constructor
+    }
+
+    // Implementing the abstract method makeSound() in the Cat class
+    @Override
+    public void makeSound() {
+        System.out.println(getName() + " meows.");
+    }
+}
+
+// Main class to test the example
+public class Main {
+    public static void main(String[] args) {
+        // Create objects of Dog and Cat
+        Animal myDog = new Dog("Rex");
+        Animal myCat = new Cat("Whiskers");
+
+        // Demonstrating Polymorphism: Calling the same method on different objects
+        myDog.makeSound();  // Output: Rex barks.
+        myCat.makeSound();  // Output: Whiskers meows.
+
+        // Demonstrating Encapsulation: Calling the sleep method from the parent class
+        myDog.sleep();      // Output: Rex is sleeping.
+        myCat.sleep();      // Output: Whiskers is sleeping.
+    }
+}
+
+Explanation:
+Abstraction:
+The Animal class is an abstract class, meaning it cannot be instantiated directly. It provides an abstract method makeSound() that is defined in the subclasses (Dog and Cat).
+
+Encapsulation:
+The name field in the Animal class is private, and access to it is provided through the public getter method getName(). This hides the internal implementation and controls how the name is accessed.
+
+Inheritance:
+The Dog and Cat classes inherit from the Animal class. They each implement the makeSound() method, allowing them to have their own specific implementation of this behavior.
+
+Polymorphism:
+The makeSound() method demonstrates polymorphism. Even though myDog and myCat are both Animal references, the actual method called depends on the object type (i.e., Dog or Cat). This is resolved at runtime.
+
+Code Output:
+The output demonstrates polymorphism in action as the same method (makeSound()) produces different results based on the object type (Dog or Cat). Additionally, both animals share a sleep() method from the parent class, showcasing inheritance.
+
+Key OOP Concepts in This Example:
+Abstraction: Hiding complex implementation details and exposing only essential functionality.
+Encapsulation: Wrapping the data (field name) and providing access through methods (getName()).
+Inheritance: The Dog and Cat classes inherit the common behavior from the Animal class.
+Polymorphism: Different classes implement the same method in different ways, allowing for different behaviors when the method is called on objects of the same superclass type.
