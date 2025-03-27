@@ -1,1 +1,82 @@
+Postorder Traversal
+
+         1
+       /    \
+      /      \
+     2        3
+    / \      / \
+   /   \    /   \
+  4     5  6     7 
+ / \      /       \
+8   9   10        11
+
+Postorder - Left/ Right/ Root
+Postorder Traversal - 8 9 4 5 2 10 6 11 7 3 1
+
+class Node {
+    int data;
+    Node left, right;
+   Node(int item)    {
+        data = item;
+        left = right = null;
+    }
+} 
+
+class Solution {
+    // Recursive solution
+    ArrayList<Integer> postOrder(Node root) {
+        ArrayList<Integer> ar = new ArrayList<>();
+        posrorder(root,ar);
+        return ar;
+    }
+    
+    public void posrorder(Node root, ArrayList<Integer> ar){
+        if(root == null) return;
+        posrorder(root.left, ar);
+        posrorder(root.right,ar);
+        ar.add(root.data);
+    }
+
+  // Iterative two stack solution
+  ArrayList<Integer> postOrder(Node root) {
+        ArrayList<Integer> ar = new ArrayList<>();
+        Stack<Node> st1 = new Stack<>();
+        Stack<Node> st2 = new Stack<>();
+        st1.push(root);
+        while(!st1.isEmpty()){
+            root = st1.pop();
+            st2.push(root);
+            if(root.left != null) st1.push(root.left);
+            if(root.right != null) st1.push(root.right);
+        }
+        while(!st2.isEmpty()){
+            ar.add(st2.pop().data);
+        }
+        return ar;
+    }
+
+  // Iterative one stack and two vatiables temp and current solution 
+  ArrayList<Integer> postOrder(Node root) {
+        ArrayList<Integer> ar = new ArrayList<>();        
+        Stack<Node> st = new Stack<>();
+        Node curr = root;
+        Node lastVisited = null;
+        while(curr != null || !st.isEmpty()){
+            if(curr != null){
+                st.push(curr);
+                curr = curr.left;
+            }
+            else{
+               Node peekNode = st.peek();
+                if (peekNode.right != null && peekNode.right != lastVisited) {
+                    curr = peekNode.right;
+                } else {
+                    ar.add(peekNode.data);
+                    lastVisited = st.pop();
+                }
+            }
+        }
+        return ar;
+    }
+}
 
