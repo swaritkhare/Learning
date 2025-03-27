@@ -11,7 +11,7 @@ Inorder Traversal
 8   9   10        11
 
 Inorder - Left/ Root /Right
-Inorder Traversal - 1 2 4 8 9 5 3 6 10 7 11
+Inorder Traversal - 8 4 9 2 5 1 10 6 3 7 11
 
 class Node {
     int data;
