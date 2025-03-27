@@ -1,6 +1,18 @@
 Levelorder Traversal 
 
+         1
+       /    \
+      /      \
+     2        3
+    / \      / \
+   /   \    /   \
+  4     5  6     7 
+ / \      /       \
+8   9   10        11
 
+Levelorder - level wise the op will be print 
+                        level 1  level 2  level 3  level 4
+Levelorder Traversal -     1      2  3    4 5 6 7  8 9 10 11
 
 class Node {
     int data;
