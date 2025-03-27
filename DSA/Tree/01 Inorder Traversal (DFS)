@@ -1,1 +1,61 @@
+Inorder Traversal
 
+         1
+       /    \
+      /      \
+     2        3
+    / \      / \
+   /   \    /   \
+  4     5  6     7 
+ / \      /       \
+8   9   10        11
+
+Inorder - Left/ Root /Right
+Inorder Traversal - 1 2 4 8 9 5 3 6 10 7 11
+
+class Node {
+    int data;
+    Node left, right;
+   Node(int item)    {
+        data = item;
+        left = right = null;
+    }
+}
+
+class Solution {
+    // Recursive solution
+    ArrayList<Integer> inOrder(Node root) {
+        ArrayList<Integer> ar = new ArrayList<>();
+        inorder(root,ar);
+        return ar;
+    }
+    
+    public void inorder(Node root,ArrayList<Integer> ar ){
+        if(root == null) return;
+        inorder(root.left, ar);
+        ar.add(root.data);
+        inorder(root.right,ar);
+    }
+
+    // Iterative solution
+    ArrayList<Integer> inOrder(Node root) {
+        ArrayList<Integer> ar = new ArrayList<>();
+        Stack<Node> st = new Stack<>();
+        Node node = root;
+        while(true){
+            if(node != null){
+                st.push(node);
+                node = node.left;
+            }
+            else{
+                if(st.isEmpty()){
+                    break;
+                }
+                node = st.pop();
+                ar.add(node.data);
+                node = node.right;
+            }
+        }
+        return ar;
+    }
+}
